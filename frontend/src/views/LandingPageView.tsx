@@ -5,9 +5,8 @@ import {
   RotateCcw, ExternalLink, ChevronDown, Activity, Sparkles,
   Lock, Award, Check, User, Upload, Eye, HelpCircle, Layers,
   Compass, Zap, TrendingUp, ChevronRight, Hash, Database,
-  Cpu, Scale, AlertOctagon, ArrowUpRight
+  Cpu, Scale, AlertOctagon, ArrowUpRight, CheckCircle2
 } from 'lucide-react';
-import { api, TrendsData } from '../api';
 
 interface LandingPageViewProps {
   onLaunchPrototype: (targetTab?: string) => void;
@@ -166,92 +165,89 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   ];
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen text-[#0F172A] selection:bg-amber-100 selection:text-amber-900 pb-20">
-      {/* 1. TOP STATUTORY METADATA HEADER */}
-      <div className="bg-[#071B2F] text-slate-300 border-b border-slate-800 text-[11px] py-1.5 px-4 font-mono">
+    <div className="bg-[#F8FAFC] min-h-screen text-[#0F172A] selection:bg-blue-100 selection:text-blue-900 pb-20 font-sans">
+      {/* 1. TOP STATUTORY METADATA HEADER (CLEAN LIGHT THEME) */}
+      <div className="bg-slate-50 border-b border-slate-200 text-[11px] py-1.5 px-4 font-mono text-slate-600">
         <div className="gov-container flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-bold text-amber-400 tracking-wider">BHARAT CYBER FORENSICS · I4C PROTOCOL</span>
-            <span className="text-slate-600">|</span>
-            <span className="hidden md:inline text-slate-400">Statutory Compliance: Section 91 &amp; 102 CrPC · Section 65B IEA</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-bold text-slate-800 tracking-wider">भारत सरकार · GOVERNMENT OF INDIA</span>
+            <span className="text-slate-400">|</span>
+            <span className="hidden md:inline text-slate-600 font-sans">Ministry of Home Affairs · Indian Cyber Crime Coordination Centre (I4C)</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-emerald-400 bg-emerald-950/60 border border-emerald-700/40 px-2 py-0.5 rounded text-[10px]">
-              DEDICATED CLOUD DB ACTIVE
+            <span className="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-[10px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> CLOUD DATABASE ACTIVE
             </span>
-            <span className="text-slate-400 text-[10px]">v2.4.0-AUTHORIZED LEA</span>
+            <span className="text-slate-500 text-[10px]">SECURE KERNEL v2.4.0</span>
           </div>
         </div>
       </div>
 
-      {/* 2. HERO PRESENTATION (HIGH-PRECISION 2-COLUMN ASYMMETRIC GRID) */}
-      <section className="bg-gradient-to-b from-[#0A2540] via-[#0E2F52] to-[#0A2540] text-white py-14 lg:py-20 border-b border-slate-700 shadow-xl relative overflow-hidden">
-        {/* Subtle Background Pattern */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
-
-        <div className="gov-container relative z-10">
+      {/* 2. HERO PRESENTATION (LIGHT, CRISP, EDITORIAL ASYMMETRIC 2-COLUMN) */}
+      <section className="bg-white border-b border-slate-200 py-12 lg:py-16">
+        <div className="gov-container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left 7 Columns: Editorial Headline, Authority & Actions */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white/10 border border-white/20 text-amber-400 text-xs font-semibold tracking-wide">
-                <Shield className="w-3.5 h-3.5 text-amber-400" />
-                MINISTRY OF HOME AFFAIRS (I4C) · NATIONAL CRYPTO INVESTIGATION CELL
+            {/* Left 7 Columns: Editorial Presentation */}
+            <div className="lg:col-span-7 space-y-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-gov-blue text-xs font-semibold tracking-wide">
+                <Shield className="w-3.5 h-3.5 text-gov-blue" />
+                OFFICIAL I4C / MHA CRYPTO FORENSICS PLATFORM
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-5.5xl font-black tracking-tight text-white leading-[1.12]">
+              <h1 className="text-3xl sm:text-5xl lg:text-5.5xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
                 De-Anonymizing India's ₹2,480 Cr Crypto Financial Crime Syndicates.
               </h1>
 
-              <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
-                Bridging the critical 18-minute money flight gap. Converting multi-hop blockchain hops into defensible Section 91 CrPC freeze orders and Section 65B certified conviction evidence.
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl font-normal">
+                Bridging the critical 18-minute criminal laundering window. Transforming on-chain ledger anomalies into defensible Section 91 CrPC freeze orders and Section 65B court-admissible conviction evidence.
               </p>
 
-              {/* 3 Core Institutional Value Pillars */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <div className="p-3 bg-white/5 border border-white/10 rounded">
-                  <div className="text-amber-400 font-bold font-mono text-xs mb-1 flex items-center gap-1.5">
-                    <Zap className="w-3.5 h-3.5" /> 1.8-Hour Freeze SLA
+              {/* 3 Core Value Cards in Light Mode */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg">
+                  <div className="text-amber-700 font-bold font-mono text-xs mb-1 flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-amber-600" /> 1.8-Hour Freeze SLA
                   </div>
-                  <div className="text-[11px] text-slate-300">
+                  <div className="text-[11px] text-slate-600 leading-snug">
                     Statutory automated directives to Binance, CoinDCX &amp; WazirX.
                   </div>
                 </div>
 
-                <div className="p-3 bg-white/5 border border-white/10 rounded">
-                  <div className="text-sky-400 font-bold font-mono text-xs mb-1 flex items-center gap-1.5">
-                    <Network className="w-3.5 h-3.5" /> Multi-Hop Tracing
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg">
+                  <div className="text-gov-blue font-bold font-mono text-xs mb-1 flex items-center gap-1.5">
+                    <Network className="w-3.5 h-3.5 text-gov-blue" /> Multi-Hop Tracing
                   </div>
-                  <div className="text-[11px] text-slate-300">
+                  <div className="text-[11px] text-slate-600 leading-snug">
                     Clustering pass-through mules across Tron, Ethereum &amp; Bitcoin.
                   </div>
                 </div>
 
-                <div className="p-3 bg-white/5 border border-white/10 rounded">
-                  <div className="text-emerald-400 font-bold font-mono text-xs mb-1 flex items-center gap-1.5">
-                    <Scale className="w-3.5 h-3.5" /> Section 65B Dossiers
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg">
+                  <div className="text-emerald-700 font-bold font-mono text-xs mb-1 flex items-center gap-1.5">
+                    <Scale className="w-3.5 h-3.5 text-emerald-600" /> Section 65B Dossiers
                   </div>
-                  <div className="text-[11px] text-slate-300">
+                  <div className="text-[11px] text-slate-600 leading-snug">
                     SHA-256 certified exhibits admissible before trial courts.
                   </div>
                 </div>
               </div>
 
-              {/* Primary Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-4">
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-3">
                 <button
                   onClick={() => onLaunchPrototype('home')}
-                  className="px-6 py-3.5 rounded bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-[1.02] transition-all"
+                  className="px-6 py-3.5 rounded-lg bg-gov-blue hover:bg-gov-blue-dark text-white font-bold text-sm flex items-center gap-2 shadow-sm transition-all"
                 >
-                  <Cpu className="w-4 h-4 text-slate-950" />
+                  <Cpu className="w-4 h-4 text-white" />
                   Launch Live Forensic Prototype (LEA Terminal) →
                 </button>
 
                 <button
                   onClick={onOpenComplaintModal}
-                  className="px-5 py-3.5 rounded bg-white/10 hover:bg-white/15 text-white font-semibold text-sm border border-white/25 flex items-center gap-2 transition-all"
+                  className="px-5 py-3.5 rounded-lg bg-white hover:bg-slate-50 text-slate-800 font-semibold text-sm border border-slate-300 flex items-center gap-2 transition-all shadow-xs"
                 >
-                  <FileText className="w-4 h-4 text-amber-400" />
+                  <FileText className="w-4 h-4 text-gov-blue" />
                   Register FIR / Complaint (Cloud DB)
                 </button>
 
@@ -260,58 +256,58 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
                     const el = document.getElementById('walkthrough-section');
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="px-4 py-3.5 text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1 transition-colors"
+                  className="px-4 py-3.5 text-slate-600 hover:text-slate-900 text-xs font-semibold flex items-center gap-1 transition-colors"
                 >
-                  <Play className="w-3.5 h-3.5 text-sky-400" />
+                  <Play className="w-3.5 h-3.5 text-gov-blue" />
                   View Video Demo
                 </button>
               </div>
             </div>
 
-            {/* Right 5 Columns: Realistic Interactive Forensic Dossier Card */}
+            {/* Right 5 Columns: Light Intelligence Dossier Card */}
             <div className="lg:col-span-5">
-              <div className="bg-slate-900 border border-slate-700/80 rounded-xl p-5 shadow-2xl space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="bg-white border-2 border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                    <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
-                      Live Forensic Interception
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                    <span className="font-mono text-xs font-bold text-slate-900 uppercase tracking-wider">
+                      Live Forensic Interception Exhibit
                     </span>
                   </div>
-                  <span className="font-mono text-[10px] text-amber-400 bg-amber-950/60 border border-amber-700/40 px-2 py-0.5 rounded">
+                  <span className="font-mono text-[10px] text-gov-blue bg-blue-50 border border-blue-200 px-2 py-0.5 rounded font-bold">
                     FIR 412/2026 · PUNE PS
                   </span>
                 </div>
 
                 {/* Case Synopsis Summary */}
-                <div className="bg-slate-950/70 p-3 rounded border border-slate-800/80 text-xs">
-                  <div className="flex justify-between text-2xs text-slate-400 mb-1">
-                    <span>Target Incident: <strong>Investment Fraud Siphon</strong></span>
-                    <span className="font-mono text-emerald-400 font-bold">Loss: ₹42,80,000</span>
+                <div className="bg-slate-50 p-3 rounded border border-slate-200 text-xs">
+                  <div className="flex justify-between text-2xs text-slate-500 mb-1">
+                    <span>Incident: <strong className="text-slate-800">Investment Fraud Syndicate</strong></span>
+                    <span className="font-mono text-red-600 font-bold">Loss: ₹42,80,000</span>
                   </div>
-                  <div className="text-[11px] text-slate-300">
+                  <div className="text-[11px] text-slate-700 leading-snug">
                     Victim capital swept across 3 pass-through mule hops into Binance institutional deposit clusters.
                   </div>
                 </div>
 
-                {/* Interactive Multi-Hop Trace Visualization */}
+                {/* Multi-Hop Trail in Clean Light Mode */}
                 <div className="space-y-2">
-                  <div className="text-2xs font-bold font-mono text-slate-400 uppercase tracking-wider">
+                  <div className="text-2xs font-bold font-mono text-slate-500 uppercase tracking-wider">
                     On-Chain Interception Path:
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {[
                       {
-                        hop: 'Hop 0 (Victim)',
+                        hop: 'Hop 0',
                         address: '0x4838b1...5f97',
-                        label: 'S. K. Verma (Complainant)',
+                        label: 'S. K. Verma (Victim)',
                         amount: '₹42.8 Lakh (ETH)',
                         status: 'DRAINED',
                         time: 'T+00 min'
                       },
                       {
-                        hop: 'Hop 1 (Mule Alpha)',
+                        hop: 'Hop 1',
                         address: '0x7a912e...12fe',
                         label: 'Primary Mule Alpha',
                         amount: 'Sweep 18.2 ETH',
@@ -319,7 +315,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
                         time: 'T+14 min'
                       },
                       {
-                        hop: 'Hop 2 (Cross-Chain)',
+                        hop: 'Hop 2',
                         address: 'contract-stargate',
                         label: 'Stargate Finance Bridge',
                         amount: 'USDT 48,200',
@@ -327,7 +323,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
                         time: 'T+28 min'
                       },
                       {
-                        hop: 'Hop 3 (VASP Target)',
+                        hop: 'Hop 3',
                         address: 'vasp-binance-hot6',
                         label: 'Binance Hot Wallet 6',
                         amount: 'USDT 48,200 (₹40.2L)',
@@ -340,29 +336,31 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
                         onClick={() => setActiveTraceStep(idx)}
                         className={`p-2.5 rounded border transition-all cursor-pointer flex items-center justify-between text-xs ${
                           activeTraceStep === idx
-                            ? 'bg-gov-blue/20 border-gov-blue shadow-inner'
-                            : 'bg-slate-950/40 border-slate-800 hover:border-slate-700'
+                            ? 'bg-blue-50/70 border-gov-blue shadow-xs'
+                            : 'bg-white border-slate-200 hover:border-slate-300'
                         }`}
                       >
                         <div className="flex items-center gap-2.5 truncate pr-2">
                           <span className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-[10px] font-bold shrink-0 ${
-                            idx === 3 ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-300'
+                            idx === 3 ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-700'
                           }`}>
                             {idx}
                           </span>
                           <div className="truncate">
-                            <div className="font-semibold text-white truncate flex items-center gap-1.5">
+                            <div className="font-semibold text-slate-900 truncate flex items-center gap-1.5">
                               <span>{step.label}</span>
-                              <span className="font-mono text-[10px] text-slate-400">({step.address})</span>
+                              <span className="font-mono text-[10px] text-slate-500">({step.address})</span>
                             </div>
-                            <div className="text-[10px] text-slate-400 font-mono">
+                            <div className="text-[10px] text-slate-500 font-mono">
                               {step.amount} · Velocity: {step.time}
                             </div>
                           </div>
                         </div>
 
                         <span className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 ${
-                          step.status === 'ATTACHED' ? 'bg-emerald-950 text-emerald-400 border border-emerald-700/50' : 'bg-slate-800 text-slate-400'
+                          step.status === 'ATTACHED'
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                            : 'bg-slate-100 text-slate-600'
                         }`}>
                           {step.status}
                         </span>
@@ -372,17 +370,17 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
                 </div>
 
                 {/* Statutory Interception Verdict */}
-                <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                   <div>
-                    <span className="text-[10px] text-slate-400 uppercase font-mono block">Statutory Order</span>
-                    <span className="font-bold text-emerald-400 font-mono">CRPC 91 NOTICE #REQ-SH-0941</span>
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Statutory Order</span>
+                    <span className="font-bold text-emerald-700 font-mono">CRPC 91 NOTICE #REQ-SH-0941</span>
                   </div>
                   <button
                     onClick={() => onLaunchPrototype('investigate')}
-                    className="btn-secondary text-[11px] py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-white border-slate-600 flex items-center gap-1"
+                    className="btn-secondary text-[11px] py-1.5 px-3 flex items-center gap-1"
                   >
                     <span>Inspect in Prototype</span>
-                    <ArrowRight className="w-3 h-3 text-emerald-400" />
+                    <ArrowRight className="w-3 h-3 text-gov-blue" />
                   </button>
                 </div>
               </div>
@@ -391,7 +389,38 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         </div>
       </section>
 
-      {/* 3. THE PROBLEM: 3 CRITICAL FORENSIC BOTTLENECKS */}
+      {/* 3. NATIONAL METRICS STRIP (LIGHT CARDS) */}
+      <section className="bg-slate-50 border-b border-slate-200 py-8">
+        <div className="gov-container">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Reported National Loss (2026)</div>
+              <div className="text-2xl font-black text-red-600 font-mono mt-1">₹2,480 Cr</div>
+              <div className="text-[11px] text-slate-500 mt-0.5">Across 84 active syndicates</div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Frozen / Attached Capital</div>
+              <div className="text-2xl font-black text-gov-blue font-mono mt-1">₹612.4 Cr</div>
+              <div className="text-[11px] text-slate-500 mt-0.5">Via SAHYOG CrPC 91 Directives</div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Judicial Restitution Rate</div>
+              <div className="text-2xl font-black text-emerald-700 font-mono mt-1">24.7%</div>
+              <div className="text-[11px] text-slate-500 mt-0.5">Court-ordered victim restoration</div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Average VASP Freeze SLA</div>
+              <div className="text-2xl font-black text-amber-700 font-mono mt-1">1.8 - 4.2 hrs</div>
+              <div className="text-[11px] text-slate-500 mt-0.5">Turnaround on Indian Exchanges</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. THE PROBLEM: 3 SYSTEMIC CHOKEPOINTS */}
       <section className="gov-container py-16">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="text-xs font-bold font-mono uppercase tracking-wider text-red-600 mb-1.5">
@@ -406,8 +435,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div className="w-10 h-10 rounded bg-red-100 text-red-700 font-mono font-bold flex items-center justify-center text-sm mb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs hover:border-slate-300 transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-red-50 text-red-700 font-mono font-bold flex items-center justify-center text-sm mb-4 border border-red-200">
               01
             </div>
             <h3 className="text-base font-bold text-slate-900 mb-2">The 18-Minute Money Flight</h3>
@@ -419,8 +448,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
             </div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div className="w-10 h-10 rounded bg-amber-100 text-amber-800 font-mono font-bold flex items-center justify-center text-sm mb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs hover:border-slate-300 transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-800 font-mono font-bold flex items-center justify-center text-sm mb-4 border border-amber-200">
               02
             </div>
             <h3 className="text-base font-bold text-slate-900 mb-2">Jurisdictional Black Holes</h3>
@@ -432,8 +461,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
             </div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div className="w-10 h-10 rounded bg-blue-100 text-gov-blue font-mono font-bold flex items-center justify-center text-sm mb-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs hover:border-slate-300 transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-blue-50 text-gov-blue font-mono font-bold flex items-center justify-center text-sm mb-4 border border-blue-200">
               03
             </div>
             <h3 className="text-base font-bold text-slate-900 mb-2">Courtroom Evidentiary Void</h3>
@@ -447,8 +476,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         </div>
       </section>
 
-      {/* 4. THE NETRA SOLUTION: 4-PILLAR FORENSIC PIPELINE */}
-      <section className="bg-slate-100/80 border-y border-slate-200 py-16">
+      {/* 5. THE SOLUTION: 4-PILLAR FORENSIC PIPELINE */}
+      <section className="bg-slate-100/70 border-y border-slate-200 py-16">
         <div className="gov-container">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <div className="text-xs font-bold font-mono uppercase tracking-wider text-gov-blue mb-1.5">
@@ -546,7 +575,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         </div>
       </section>
 
-      {/* 5. INTERACTIVE VIDEO TUTORIAL & PLATFORM SIMULATOR */}
+      {/* 6. INTERACTIVE VIDEO WALKTHROUGH SIMULATOR (LIGHT CONSOLE STYLE) */}
       <section id="walkthrough-section" className="gov-container py-16">
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="text-xs font-bold font-mono uppercase tracking-wider text-gov-blue mb-1.5">
@@ -560,23 +589,23 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
           </p>
         </div>
 
-        {/* The Video Simulator Card */}
-        <div className="bg-slate-950 text-white rounded-xl overflow-hidden shadow-2xl border border-slate-800">
-          {/* Top Video Header */}
-          <div className="p-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+        {/* Light Console Styled Video Card */}
+        <div className="bg-white border-2 border-slate-300 rounded-xl overflow-hidden shadow-sm">
+          {/* Header */}
+          <div className="p-4 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
-              <span className="font-mono text-xs font-bold text-slate-200">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" />
+              <span className="font-mono text-xs font-bold text-slate-800">
                 OFFICIAL WORKFLOW DEMO · CHAPTER {activeChapter.id} OF 7
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-emerald-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
+              <span className="font-mono text-xs text-gov-blue bg-white px-2 py-0.5 rounded border border-slate-300 font-bold">
                 {activeChapter.timeCode}
               </span>
               <button
                 onClick={() => onLaunchPrototype(activeChapter.tabId)}
-                className="text-xs font-semibold px-2.5 py-1 rounded bg-gov-blue text-white hover:bg-gov-blue-dark flex items-center gap-1 shadow-xs transition-colors"
+                className="btn-primary text-xs flex items-center gap-1 py-1"
               >
                 <span>Jump to Live {activeChapter.tabLabel}</span>
                 <ArrowRight className="w-3 h-3" />
@@ -584,37 +613,37 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
             </div>
           </div>
 
-          {/* Interactive Screen Display */}
-          <div className="p-8 bg-gradient-to-b from-slate-900 to-slate-950 min-h-[280px] flex flex-col justify-between">
+          {/* Screen Content */}
+          <div className="p-8 bg-slate-50 min-h-[260px] flex flex-col justify-between">
             <div>
-              <div className="inline-block font-mono text-xs font-bold text-amber-400 bg-amber-950/60 border border-amber-700/40 px-2.5 py-1 rounded mb-3">
+              <div className="inline-block font-mono text-xs font-bold text-gov-blue bg-blue-50 border border-blue-200 px-2.5 py-1 rounded mb-3">
                 {activeChapter.tabLabel.toUpperCase()}
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
                 {activeChapter.title}
               </h3>
-              <p className="text-sm text-slate-300 max-w-3xl leading-relaxed">
+              <p className="text-sm text-slate-600 max-w-3xl leading-relaxed">
                 {activeChapter.subtitle}
               </p>
             </div>
 
-            {/* Narration Subtitle Box */}
-            <div className="mt-8 p-4 rounded-lg bg-slate-900/80 border border-slate-700/70 text-xs sm:text-sm text-emerald-300 font-mono flex items-start gap-3">
-              <Compass className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+            {/* Narration box in light mode */}
+            <div className="mt-8 p-4 rounded-lg bg-white border border-slate-200 text-xs sm:text-sm text-slate-700 font-mono flex items-start gap-3 shadow-xs">
+              <Compass className="w-5 h-5 text-gov-blue shrink-0 mt-0.5" />
               <div className="leading-relaxed">
-                <span className="font-bold text-white mr-1.5">[NARRATION]:</span>
+                <span className="font-bold text-gov-blue mr-1.5">[NARRATION]:</span>
                 {activeChapter.narration}
               </div>
             </div>
           </div>
 
-          {/* Scrubber & Controls Bar */}
-          <div className="p-4 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          {/* Controls Bar in Light Mode */}
+          <div className="p-4 bg-white border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             {/* Play/Pause & Reset */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="p-2.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-all"
+                className="p-2.5 rounded-full bg-gov-blue hover:bg-gov-blue-dark text-white font-bold transition-all shadow-xs"
                 title={isPlaying ? 'Pause Demo' : 'Play Demo'}
               >
                 {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
@@ -626,19 +655,19 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
                   setActiveChapterIndex(0);
                   setIsPlaying(false);
                 }}
-                className="p-2 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                className="p-2 rounded hover:bg-slate-100 text-slate-600 transition-colors"
                 title="Restart from Step 1"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
 
               {/* Speed toggle */}
-              <div className="flex items-center gap-1 bg-slate-800 rounded p-0.5 text-2xs font-mono">
+              <div className="flex items-center gap-1 bg-slate-100 rounded p-0.5 text-2xs font-mono">
                 {[1, 1.5, 2].map(speed => (
                   <button
                     key={speed}
                     onClick={() => setPlaybackSpeed(speed)}
-                    className={`px-1.5 py-0.5 rounded ${playbackSpeed === speed ? 'bg-gov-blue text-white font-bold' : 'text-slate-400'}`}
+                    className={`px-1.5 py-0.5 rounded ${playbackSpeed === speed ? 'bg-white text-slate-900 font-bold shadow-xs' : 'text-slate-600'}`}
                   >
                     {speed}x
                   </button>
@@ -654,8 +683,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
                   onClick={() => handleSelectChapter(idx)}
                   className={`px-2.5 py-1.5 rounded text-2xs font-mono whitespace-nowrap transition-all ${
                     activeChapterIndex === idx
-                      ? 'bg-amber-400 text-slate-950 font-bold shadow-sm'
-                      : 'bg-slate-800 text-slate-400 hover:text-white'
+                      ? 'bg-gov-blue text-white font-bold shadow-xs'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   }`}
                 >
                   Step {ch.id}: {ch.tabLabel.split(' ')[1]}
@@ -666,24 +695,24 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         </div>
       </section>
 
-      {/* 6. PROTOTYPE LAUNCHER: THE 8 OPERATIONAL MODULES */}
-      <section className="bg-slate-900 text-white py-16 border-t border-slate-800">
+      {/* 7. PROTOTYPE LAUNCHER: THE 8 OPERATIONAL MODULES (LIGHT CARDS) */}
+      <section className="bg-slate-100/70 border-t border-slate-200 py-16">
         <div className="gov-container">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
             <div>
-              <div className="text-xs font-bold font-mono uppercase tracking-wider text-emerald-400 mb-1">
+              <div className="text-xs font-bold font-mono uppercase tracking-wider text-gov-blue mb-1">
                 OPERATIONAL PROTOTYPE SHOWCASE
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 Explore All 8 Law Enforcement Investigation Modules
               </h2>
-              <p className="text-sm text-slate-400 mt-1 max-w-2xl">
+              <p className="text-sm text-slate-600 mt-1 max-w-2xl">
                 Every module is live with verified on-chain datasets, Section 91 notice generators, and shared cloud database sync.
               </p>
             </div>
             <button
               onClick={() => onLaunchPrototype('home')}
-              className="px-5 py-2.5 rounded bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs shrink-0 flex items-center gap-1.5 transition-all shadow-md"
+              className="btn-primary text-xs flex items-center gap-1.5"
             >
               Enter Master Dashboard →
             </button>
@@ -751,23 +780,23 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
               <div
                 key={mod.id}
                 onClick={() => onLaunchPrototype(mod.id)}
-                className="bg-slate-800/80 border border-slate-700 rounded-lg p-5 hover:border-slate-500 transition-all cursor-pointer group flex flex-col justify-between"
+                className="bg-white border border-slate-200 rounded-lg p-5 hover:border-gov-blue transition-all cursor-pointer group flex flex-col justify-between shadow-xs hover:shadow-sm"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-700 text-slate-300">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold">
                       {mod.badge}
                     </span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-gov-blue group-hover:translate-x-1 transition-all" />
                   </div>
-                  <h3 className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-sm font-bold text-slate-900 group-hover:text-gov-blue transition-colors">
                     {mod.title}
                   </h3>
-                  <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                  <p className="text-xs text-slate-600 mt-2 leading-relaxed">
                     {mod.desc}
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-700/60 text-2xs font-semibold text-emerald-400">
+                <div className="mt-4 pt-3 border-t border-slate-100 text-2xs font-semibold text-gov-blue">
                   {mod.btn} →
                 </div>
               </div>
@@ -776,7 +805,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         </div>
       </section>
 
-      {/* 7. FREQUENTLY ASKED QUESTIONS (FAQ) ACCORDION */}
+      {/* 8. FREQUENTLY ASKED QUESTIONS (FAQ) ACCORDION (LIGHT WHITE ACCORDION) */}
       <section className="gov-container py-16">
         <div className="text-center mb-10 max-w-3xl mx-auto">
           <div className="text-xs font-bold font-mono uppercase tracking-wider text-gov-blue mb-1.5">
@@ -814,25 +843,28 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         </div>
       </section>
 
-      {/* 8. BOTTOM CALL-TO-ACTION */}
+      {/* 9. BOTTOM CALL-TO-ACTION (ELEGANT LIGHT/NAVY ACCENT) */}
       <section className="gov-container">
-        <div className="bg-gradient-to-r from-gov-blue-dark via-gov-blue to-slate-900 text-white rounded-xl p-8 sm:p-10 text-center shadow-xl">
+        <div className="bg-slate-900 text-white rounded-xl p-8 sm:p-10 text-center shadow-lg border border-slate-800">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white/10 text-emerald-400 font-mono text-2xs font-semibold mb-3">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> PRODUCTION READY FOR STATE CYBER CRIME CELLS
+          </div>
           <h2 className="text-2xl sm:text-3xl font-black mb-3">
             Ready to Test the Operational Investigation Terminal?
           </h2>
-          <p className="text-slate-200 text-xs sm:text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
+          <p className="text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
             Experience multi-hop wallet de-anonymization, statutory VASP freezing, and Section 65B certified court report generation in real time.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => onLaunchPrototype('home')}
-              className="px-6 py-3 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-md transition-all"
+              className="px-6 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-md transition-all"
             >
               Launch Live Prototype (Dashboard) →
             </button>
             <button
               onClick={onOpenComplaintModal}
-              className="px-5 py-3 rounded bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/30 transition-all"
+              className="px-5 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/30 transition-all"
             >
               Register FIR / Complaint (Cloud DB)
             </button>
