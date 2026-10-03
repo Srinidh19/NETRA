@@ -1,6 +1,26 @@
 {
   "complaints": [
     {
+      "id": "CP-2026-4208",
+      "date": "2026-10-03",
+      "complainant": "xdcv",
+      "category": "Investment / Trading Fraud",
+      "description": "xvcxcvdf",
+      "reference_number": "NCRP-ACK-4876",
+      "jurisdiction": "State Cyber Crime Coordination Cell",
+      "investigating_unit": "Cyber Police Station, Pune City",
+      "priority": "MEDIUM",
+      "status": "ACTIVE_INVESTIGATION",
+      "wallet_address": "",
+      "tx_hash": "xcvxvd",
+      "chain": "Bitcoin",
+      "asset": "USDT",
+      "amount": "₹fbvf",
+      "suspected_vasp": "vxcv",
+      "known_domain": "dvd",
+      "timestamp": "2026-10-03T22:28:33.827Z"
+    },
+    {
       "id": "CP-2026-3209",
       "date": "2026-10-03",
       "complainant": "Anonymous Citizen / Law Enforcement Unit",
@@ -29,5 +49,5 @@
       "status": "ACTIVE"
     }
   ],
-  "updated_at": "2026-10-03T22:23:42.846Z"
+  "updated_at": "2026-10-03T22:28:33.938Z"
 }
