@@ -42,162 +42,319 @@ const statusBadge = (s: string) => {
 };
 
 // --- Complaint Registration Form ---
-const ComplaintForm: React.FC<{ onSubmit: (data: any) => void; onCancel: () => void }> = ({ onSubmit, onCancel }) => {
+// --- Complaint & FIR Registration Form with Live File Upload ---
+const ComplaintForm: React.FC<{
+  onSubmit: (data: any) => void;
+  onCancel: () => void;
+  isFirMode?: boolean;
+}> = ({ onSubmit, onCancel, isFirMode = false }) => {
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [attachments, setAttachments] = useState<Array<{ name: string; size: string; type: string }>>([]);
   const [form, setForm] = useState({
     complaint_id: `CP-2026-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+    fir_number: `FIR ${Math.floor(100 + Math.random() * 900)}/2026`,
     date: new Date().toISOString().split('T')[0],
     complainant: '',
-    category: '',
+    category: 'Investment / Trading Fraud',
     description: '',
-    reference_number: '',
-    jurisdiction: '',
-    investigating_unit: 'Cyber Police Station, Pune City',
-    priority: 'MEDIUM',
+    reference_number: `NCRP-ACK-${Math.floor(100000 + Math.random() * 900000)}`,
+    jurisdiction: 'Cyber Police Station, Pune City',
+    investigating_unit: 'Special Cyber Crime Investigation Cell (I4C Relay)',
+    priority: 'HIGH',
     wallet_address: '',
     tx_hash: '',
-    chain: '',
-    asset: '',
-    amount: '',
-    suspected_vasp: '',
+    chain: 'Ethereum',
+    asset: 'USDT',
+    amount: '42,80,000',
+    suspected_vasp: 'Binance Global',
     known_domain: '',
   });
 
   const set = (k: string, v: string) => setForm(prev => ({ ...prev, [k]: v }));
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const newFiles = Array.from(e.target.files).map(f => ({
+        name: f.name,
+        size: (f.size / 1024).toFixed(1) + ' KB',
+        type: f.type || 'document'
+      }));
+      setAttachments(prev => [...prev, ...newFiles]);
+    }
+  };
+
+  const removeAttachment = (index: number) => {
+    setAttachments(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleAutoFill = () => {
+    setForm({
+      complaint_id: `CP-2026-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+      fir_number: `FIR ${Math.floor(100 + Math.random() * 900)}/2026`,
+      date: new Date().toISOString().split('T')[0],
+      complainant: 'S. K. Verma (Victim)',
+      category: 'Investment / Trading Fraud',
+      description: 'Victim was lured via WhatsApp & Telegram into fake algorithmic staking liquidity pool. Transferred 42.8 Lakh INR equivalent in crypto to mule wallets.',
+      reference_number: `1930-NCRP-${Math.floor(100000 + Math.random() * 900000)}`,
+      jurisdiction: 'Pune City Cyber Cell, Maharashtra',
+      investigating_unit: 'Cyber Police Station, Shivajinagar',
+      priority: 'CRITICAL',
+      wallet_address: '0x7a912e84c98f5b89a456102dc840b8a1c97012fe',
+      tx_hash: '0x3a9f182c4d9e012984bb12094c18091844jK8102',
+      chain: 'Ethereum',
+      asset: 'USDT',
+      amount: '42,80,000',
+      suspected_vasp: 'Binance Global',
+      known_domain: 'quant-yield-in.vip',
+    });
+    setAttachments([
+      { name: 'NCRP_Complaint_Transcript_1930.pdf', size: '245.8 KB', type: 'application/pdf' },
+      { name: 'Bank_Statement_IMPS_Tx.png', size: '512.4 KB', type: 'image/png' },
+      { name: 'WhatsApp_Syndicate_Chat_Evidence.pdf', size: '890.1 KB', type: 'application/pdf' }
+    ]);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(form);
+    onSubmit({
+      ...form,
+      attachments,
+      evidence_count: attachments.length || 1
+    });
   };
 
   return (
-    <div className="bg-bg-surface border border-border-default rounded-md shadow-panel p-6 animate-fade-in">
+    <div className="bg-bg-surface border-2 border-gov-blue/40 rounded-lg shadow-xl p-6 animate-fade-in max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-5 pb-4 border-b border-border-default">
         <div>
-          <div className="section-label mb-1">Complaint Registration</div>
-          <h2 className="text-lg font-semibold text-text-primary">Register New Complaint</h2>
+          <div className="section-label mb-1 text-gov-blue">Official Statutory Docket Registration</div>
+          <h2 className="text-xl font-bold text-text-primary flex items-center gap-2">
+            <FileText className="w-5 h-5 text-gov-blue" />
+            {isFirMode ? 'Register New First Information Report (FIR)' : 'Register Criminal Cyber Complaint'}
+          </h2>
+          <p className="text-xs text-text-secondary mt-0.5">
+            Registered records are committed immediately to the shared National Cloud Repository for inter-state deconfliction.
+          </p>
         </div>
-        <button onClick={onCancel} className="p-1.5 rounded hover:bg-bg-elevated text-text-muted">
-          <X className="w-4 h-4" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleAutoFill}
+            className="text-2xs font-semibold px-2.5 py-1.5 rounded bg-amber-50 text-amber-800 border border-amber-300 hover:bg-amber-100 flex items-center gap-1 transition-colors"
+          >
+            ⚡ Auto-Fill Sample Data
+          </button>
+          <button onClick={onCancel} className="p-1.5 rounded hover:bg-bg-elevated text-text-muted">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Section 1: Complaint Details */}
+        {/* Section 1: Complaint & FIR Identifiers */}
         <div>
-          <div className="section-label mb-3">Complaint Details</div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="section-label mb-3">1. Legal &amp; Complainant Identifiers</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="form-label">Complaint ID (Auto-generated)</label>
+              <label className="form-label">Docket / FIR Number *</label>
+              <input
+                type="text"
+                value={form.fir_number}
+                onChange={e => set('fir_number', e.target.value)}
+                className="form-input font-mono font-bold text-gov-blue"
+                required
+              />
+            </div>
+            <div>
+              <label className="form-label">Complaint ID (Auto)</label>
               <input type="text" value={form.complaint_id} readOnly className="form-input bg-bg-secondary font-mono text-text-muted" />
             </div>
             <div>
-              <label className="form-label">Date of Complaint</label>
+              <label className="form-label">Date of Filing</label>
               <input type="date" value={form.date} onChange={e => set('date', e.target.value)} className="form-input" />
             </div>
             <div>
               <label className="form-label">Complainant / Source *</label>
-              <input type="text" value={form.complainant} onChange={e => set('complainant', e.target.value)} placeholder="Name of complainant or agency" className="form-input" required />
+              <input type="text" value={form.complainant} onChange={e => set('complainant', e.target.value)} placeholder="e.g. S. K. Verma / NCRP 1930" className="form-input" required />
             </div>
             <div>
-              <label className="form-label">Complaint Category *</label>
-              <select value={form.category} onChange={e => set('category', e.target.value)} className="form-select" required>
-                <option value="">Select category...</option>
+              <label className="form-label">Crime Typology *</label>
+              <select value={form.category} onChange={e => set('category', e.target.value)} className="form-select font-medium" required>
                 {COMPLAINT_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
-            <div className="col-span-2">
-              <label className="form-label">Description *</label>
+            <div>
+              <label className="form-label">Priority Level</label>
+              <select value={form.priority} onChange={e => set('priority', e.target.value)} className="form-select font-bold">
+                <option value="CRITICAL">CRITICAL (Active Money Flight)</option>
+                <option value="HIGH">HIGH (Under 24h Window)</option>
+                <option value="MEDIUM">MEDIUM (Standard Queue)</option>
+                <option value="LOW">LOW</option>
+              </select>
+            </div>
+            <div className="col-span-1 md:col-span-3">
+              <label className="form-label">Allegation Brief &amp; Modus Operandi *</label>
               <textarea
                 value={form.description}
                 onChange={e => set('description', e.target.value)}
                 rows={3}
-                placeholder="Describe the complaint in detail..."
+                placeholder="Detail the sequence of events, extortion technique, and suspected communication channels (WhatsApp/Telegram/APK)..."
                 className="form-input resize-none"
                 required
               />
             </div>
             <div>
-              <label className="form-label">Reference Number (FIR / NCRP)</label>
-              <input type="text" value={form.reference_number} onChange={e => set('reference_number', e.target.value)} placeholder="FIR No. or NCRP Reference" className="form-input" />
+              <label className="form-label">NCRP Reference / ACK Token</label>
+              <input type="text" value={form.reference_number} onChange={e => set('reference_number', e.target.value)} placeholder="1930 Token..." className="form-input font-mono text-xs" />
             </div>
             <div>
-              <label className="form-label">Jurisdiction</label>
-              <input type="text" value={form.jurisdiction} onChange={e => set('jurisdiction', e.target.value)} placeholder="State / District" className="form-input" />
+              <label className="form-label">Police Station / Jurisdiction *</label>
+              <input type="text" value={form.jurisdiction} onChange={e => set('jurisdiction', e.target.value)} placeholder="e.g. Pune Cyber Crime PS" className="form-input" required />
             </div>
             <div>
-              <label className="form-label">Investigating Unit</label>
+              <label className="form-label">Investigating Unit / IO</label>
               <input type="text" value={form.investigating_unit} onChange={e => set('investigating_unit', e.target.value)} className="form-input" />
-            </div>
-            <div>
-              <label className="form-label">Priority</label>
-              <select value={form.priority} onChange={e => set('priority', e.target.value)} className="form-select">
-                <option value="CRITICAL">Critical</option>
-                <option value="HIGH">High</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="LOW">Low</option>
-              </select>
             </div>
           </div>
         </div>
 
-        {/* Section 2: Financial / Blockchain Details */}
-        <div>
-          <div className="section-label mb-3">Financial / Blockchain Details <span className="normal-case font-normal text-text-muted">(if available)</span></div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="form-label">Wallet Address</label>
-              <input type="text" value={form.wallet_address} onChange={e => set('wallet_address', e.target.value)} placeholder="0x... or Tron address" className="form-input font-mono text-xs" />
+        {/* Section 2: Financial & Blockchain Coordinates */}
+        <div className="pt-4 border-t border-border-default">
+          <div className="section-label mb-3">2. On-Chain Coordinates &amp; Suspect Footprint</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="col-span-1 md:col-span-2">
+              <label className="form-label">Suspect / Mule Destination Wallet Address *</label>
+              <input
+                type="text"
+                value={form.wallet_address}
+                onChange={e => set('wallet_address', e.target.value)}
+                placeholder="0x... (EVM) or TRx... (Tron) or bc1... (BTC)"
+                className="form-input font-mono text-xs text-red-600 font-bold"
+                required
+              />
             </div>
             <div>
-              <label className="form-label">Transaction Hash</label>
+              <label className="form-label">Blockchain Network *</label>
+              <select value={form.chain} onChange={e => set('chain', e.target.value)} className="form-select font-medium">
+                <option value="Ethereum">Ethereum (ERC-20)</option>
+                <option value="Tron">Tron (TRC-20 USDT)</option>
+                <option value="Bitcoin">Bitcoin (BTC)</option>
+                <option value="BNB Chain">BNB Smart Chain (BEP-20)</option>
+                <option value="Polygon">Polygon (PoS)</option>
+              </select>
+            </div>
+            <div>
+              <label className="form-label">Transaction Hash (TxID)</label>
               <input type="text" value={form.tx_hash} onChange={e => set('tx_hash', e.target.value)} placeholder="0x..." className="form-input font-mono text-xs" />
             </div>
             <div>
-              <label className="form-label">Blockchain / Chain</label>
-              <select value={form.chain} onChange={e => set('chain', e.target.value)} className="form-select">
-                <option value="">Select chain...</option>
-                <option value="Ethereum">Ethereum (EVM)</option>
-                <option value="Tron">Tron (TRC-20)</option>
-                <option value="Bitcoin">Bitcoin</option>
-                <option value="BNB Chain">BNB Smart Chain</option>
-                <option value="Polygon">Polygon</option>
-              </select>
-            </div>
-            <div>
               <label className="form-label">Asset / Token</label>
-              <input type="text" value={form.asset} onChange={e => set('asset', e.target.value)} placeholder="ETH, USDT, BTC..." className="form-input" />
+              <input type="text" value={form.asset} onChange={e => set('asset', e.target.value)} placeholder="USDT, ETH, BTC..." className="form-input font-mono" />
             </div>
             <div>
-              <label className="form-label">Amount (approx. INR loss)</label>
-              <input type="text" value={form.amount} onChange={e => set('amount', e.target.value)} placeholder="₹ amount" className="form-input" />
+              <label className="form-label">Reported Fraud Loss (₹ INR) *</label>
+              <input type="text" value={form.amount} onChange={e => set('amount', e.target.value)} placeholder="₹ Amount (e.g. 42,80,000)" className="form-input font-mono font-bold text-slate-900" required />
             </div>
             <div>
-              <label className="form-label">Suspected VASP / Exchange</label>
-              <input type="text" value={form.suspected_vasp} onChange={e => set('suspected_vasp', e.target.value)} placeholder="Exchange name if known" className="form-input" />
+              <label className="form-label">Suspected Cashing VASP / Exchange</label>
+              <input type="text" value={form.suspected_vasp} onChange={e => set('suspected_vasp', e.target.value)} placeholder="e.g. Binance Global, CoinDCX, Bybit" className="form-input" />
             </div>
-            <div>
-              <label className="form-label">Known Domain / Identifier</label>
-              <input type="text" value={form.known_domain} onChange={e => set('known_domain', e.target.value)} placeholder="Website / app / UPI ID..." className="form-input" />
+            <div className="col-span-1 md:col-span-2">
+              <label className="form-label">Phishing URL / Telegram ID / Mule UPI</label>
+              <input type="text" value={form.known_domain} onChange={e => set('known_domain', e.target.value)} placeholder="e.g. t.me/mule_traders, fake-exchange.vip" className="form-input" />
             </div>
-          </div>
-
-          {/* Attachments */}
-          <div className="mt-4 p-3 border-2 border-dashed border-border-default rounded-md flex flex-col items-center justify-center text-center">
-            <Upload className="w-5 h-5 text-text-muted mb-1" />
-            <div className="text-xs font-medium text-text-secondary">Attach documents</div>
-            <div className="text-2xs text-text-muted">Screenshots, bank statements, FIR copy (PDF, JPG, PNG)</div>
-            <button type="button" className="btn-secondary text-xs mt-2">Choose files</button>
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-border-default">
-          <button type="button" onClick={onCancel} className="btn-secondary text-xs">Cancel</button>
+        {/* Section 3: Live File Upload Section */}
+        <div className="pt-4 border-t border-border-default">
+          <div className="flex items-center justify-between mb-2">
+            <div className="section-label">3. Evidentiary Attachments (Section 65B Audit Vault)</div>
+            <span className="text-2xs text-text-muted">PDF, PNG, JPG up to 25MB each</span>
+          </div>
+
+          {/* Hidden File Input */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            multiple
+            accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.txt,.csv"
+            className="hidden"
+          />
+
+          {/* Upload Dropzone */}
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            className="p-5 border-2 border-dashed border-gov-blue/40 bg-gov-blue/5 hover:bg-gov-blue/10 rounded-lg flex flex-col items-center justify-center text-center cursor-pointer transition-colors"
+          >
+            <Upload className="w-8 h-8 text-gov-blue mb-2 animate-bounce" />
+            <div className="text-xs font-bold text-gov-blue">Click or Drag &amp; Drop Evidentiary Files Here</div>
+            <div className="text-2xs text-text-muted mt-1">
+              FIR Copy, Bank Account Statements, WhatsApp/Telegram Screenshots, TxID Receipts
+            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                fileInputRef.current?.click();
+              }}
+              className="btn-primary text-xs mt-3 flex items-center gap-1.5 shadow-sm"
+            >
+              <Upload className="w-3.5 h-3.5" /> Select Files from Computer
+            </button>
+          </div>
+
+          {/* Uploaded Files List */}
+          {attachments.length > 0 && (
+            <div className="mt-3 space-y-2">
+              <div className="text-2xs font-bold text-slate-700 uppercase tracking-wider">
+                Attached Files ({attachments.length}):
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {attachments.map((file, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded text-xs">
+                    <div className="flex items-center gap-2 truncate pr-2">
+                      <FileText className="w-4 h-4 text-gov-blue shrink-0" />
+                      <div className="truncate">
+                        <div className="font-semibold text-text-primary truncate">{file.name}</div>
+                        <div className="text-[10px] text-text-muted font-mono">{file.size} · Uploaded</div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeAttachment(idx)}
+                      className="p-1 text-red-500 hover:bg-red-50 rounded shrink-0"
+                      title="Remove file"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Action Controls */}
+        <div className="flex items-center justify-between pt-5 border-t border-border-default">
+          <button type="button" onClick={onCancel} className="btn-secondary text-xs">
+            Cancel
+          </button>
           <div className="flex gap-3">
-            <button type="button" className="btn-secondary text-xs">Save as Draft</button>
-            <button type="submit" className="btn-primary text-xs flex items-center gap-1.5">
-              <CheckCircle className="w-3.5 h-3.5" />
-              Register Complaint
+            <button
+              type="button"
+              onClick={handleAutoFill}
+              className="btn-secondary text-xs"
+            >
+              Fill Sample
+            </button>
+            <button
+              type="submit"
+              className="btn-primary text-xs flex items-center gap-2 px-5 py-2 text-sm shadow-md bg-gov-blue hover:bg-gov-blue-dark"
+            >
+              <CheckCircle className="w-4 h-4" />
+              {isFirMode ? 'Submit & Issue FIR Docket' : 'Register Official Complaint'}
             </button>
           </div>
         </div>
@@ -448,7 +605,10 @@ export const CasesView: React.FC<CasesViewProps> = ({
               </button>
             )}
             {activeTab === 'cases' && (
-              <button className="btn-primary text-xs flex items-center gap-1.5">
+              <button
+                onClick={() => setShowComplaintForm(true)}
+                className="btn-primary text-xs flex items-center gap-1.5"
+              >
                 <Plus className="w-3.5 h-3.5" /> + Register New FIR
               </button>
             )}
@@ -563,7 +723,11 @@ export const CasesView: React.FC<CasesViewProps> = ({
         {/* Complaint Registration Form */}
         {showComplaintForm && (
           <div className="mb-5">
-            <ComplaintForm onSubmit={handleComplaintSubmit} onCancel={() => setShowComplaintForm(false)} />
+            <ComplaintForm
+              isFirMode={activeTab === 'cases'}
+              onSubmit={handleComplaintSubmit}
+              onCancel={() => setShowComplaintForm(false)}
+            />
           </div>
         )}
 

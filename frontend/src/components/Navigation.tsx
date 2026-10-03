@@ -3,7 +3,7 @@ import {
   Home, Search, Network, Briefcase, FileText,
   Shield, ClipboardList, Bell, User, Activity,
   ChevronDown, AlertCircle, CheckCircle, ExternalLink,
-  Layers, Lock
+  Layers, Lock, Sparkles
 } from 'lucide-react';
 
 interface NavigationProps {
@@ -16,14 +16,15 @@ interface NavigationProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'home',       label: 'Dashboard',   number: '01', icon: Home },
-  { id: 'investigate',label: 'Investigate', number: '02', icon: Search },
-  { id: 'network',    label: 'Network Map', number: '03', icon: Network },
-  { id: 'cases',      label: 'FIR Dockets', number: '04', icon: Briefcase },
-  { id: 'trends',     label: 'Threat Radar',number: '05', icon: Activity },
-  { id: 'evidence',   label: 'Evidence',    number: '06', icon: FileText },
-  { id: 'sahyog',     label: 'SAHYOG',      number: '07', icon: Shield },
-  { id: 'audit',      label: 'Audit Trail', number: '08', icon: ClipboardList },
+  { id: 'landing',    label: 'Briefing & Idea', number: '00', icon: Sparkles },
+  { id: 'home',       label: 'Dashboard',       number: '01', icon: Home },
+  { id: 'investigate',label: 'Investigate',     number: '02', icon: Search },
+  { id: 'network',    label: 'Network Map',     number: '03', icon: Network },
+  { id: 'cases',      label: 'FIR Dockets',     number: '04', icon: Briefcase },
+  { id: 'trends',     label: 'Threat Radar',    number: '05', icon: Activity },
+  { id: 'evidence',   label: 'Evidence',        number: '06', icon: FileText },
+  { id: 'sahyog',     label: 'SAHYOG',          number: '07', icon: Shield },
+  { id: 'audit',      label: 'Audit Trail',     number: '08', icon: ClipboardList },
 ];
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -71,7 +72,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         {/* Brand identity */}
         <div className="flex items-center gap-3 shrink-0">
           <button
-            onClick={() => onSelectTab('home')}
+            onClick={() => onSelectTab('landing')}
             className="flex items-center gap-3 text-left group"
           >
             {/* Emblem representation */}

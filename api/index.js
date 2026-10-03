@@ -210,8 +210,11 @@ module.exports = async (req, res) => {
 
       const randomNum = Math.floor(1000 + Math.random() * 9000);
       const complaintId = body.complaint_id || `CP-2026-${randomNum}`;
+      const firNum = body.fir_number || `FIR ${Math.floor(100 + Math.random() * 900)}/2026`;
+      const attachments = Array.isArray(body.attachments) ? body.attachments : [];
       const newComplaint = {
         id: complaintId,
+        fir_number: firNum,
         date: body.date || new Date().toISOString().split('T')[0],
         complainant: body.complainant || 'Anonymous Citizen / Law Enforcement Unit',
         category: body.category || 'Investment / Trading Fraud',
@@ -228,6 +231,7 @@ module.exports = async (req, res) => {
         amount: body.amount ? `₹${body.amount}` : '₹10,00,000',
         suspected_vasp: body.suspected_vasp || 'Binance / Global VASP',
         known_domain: body.known_domain || '',
+        attachments: attachments,
         timestamp: new Date().toISOString()
       };
 
@@ -236,7 +240,7 @@ module.exports = async (req, res) => {
       // Also create an associated CaseRecord
       const newCase = {
         id: `NTR-${randomNum}`,
-        fir_number: `FIR ${Math.floor(100 + Math.random() * 900)}/2026`,
+        fir_number: firNum,
         title: `${newComplaint.category} — ${newComplaint.complainant}`,
         police_station: newComplaint.jurisdiction,
         court_name: 'Chief Metropolitan Magistrate Court',
@@ -256,7 +260,7 @@ module.exports = async (req, res) => {
         tags: [newComplaint.category, newComplaint.chain, 'MHA-NCRP'],
         identified_vasps: [newComplaint.suspected_vasp],
         synopsis: newComplaint.description,
-        evidence_count: 1,
+        evidence_count: attachments.length || 1,
         accused_count: 0
       };
       memoryDb.cases.unshift(newCase);

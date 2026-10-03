@@ -9,12 +9,13 @@ import { EvidenceView } from './views/EvidenceView';
 import { SahyogView } from './views/SahyogView';
 import { AuditView } from './views/AuditView';
 import { TrendsView } from './views/TrendsView';
+import { LandingPageView } from './views/LandingPageView';
 import { api } from './api';
 
-type Tab = 'home' | 'investigate' | 'network' | 'cases' | 'trends' | 'evidence' | 'sahyog' | 'audit';
+type Tab = 'landing' | 'home' | 'investigate' | 'network' | 'cases' | 'trends' | 'evidence' | 'sahyog' | 'audit';
 
 export function App() {
-  const [currentTab, setCurrentTab] = useState<Tab>('home');
+  const [currentTab, setCurrentTab] = useState<Tab>('landing');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSystemModalOpen, setIsSystemModalOpen] = useState(false);
 
@@ -139,6 +140,13 @@ export function App() {
       )}
 
       <main className="w-full">
+        {currentTab === 'landing' && (
+          <LandingPageView
+            onLaunchPrototype={(targetTab) => setCurrentTab((targetTab as Tab) || 'home')}
+            onOpenComplaintModal={() => setCurrentTab('cases')}
+          />
+        )}
+
         {currentTab === 'home' && (
           <HomeView
             onNavigateToTab={(tab) => setCurrentTab(tab as Tab)}
