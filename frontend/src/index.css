@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum", "zero";
+  }
+
+  body {
+    @apply bg-bg-base text-text-primary font-sans;
+    background-color: #F8FAFC;
+    color: #0F172A;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  * {
+    @apply border-border-default;
+  }
+}
+
+@layer components {
+  /* Global Layout Container for Unified Alignment */
+  .gov-container {
+    @apply max-w-[1600px] mx-auto px-4 sm:px-6 w-full;
+  }
+  /* === GOV PORTAL BUTTONS === */
+  .btn-primary {
+    @apply px-3.5 py-2 rounded text-sm font-medium bg-gov-blue text-white
+           hover:bg-gov-blue-2 transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-gov-blue/40;
+  }
+
+  .btn-secondary {
+    @apply px-3.5 py-2 rounded text-sm font-medium bg-bg-surface text-text-primary
+           border border-border-default hover:bg-bg-elevated hover:border-border-strong
+           transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gov-blue/20;
+  }
+
+  .btn-ghost {
+    @apply px-3 py-1.5 rounded text-sm font-medium text-text-secondary
+           hover:bg-bg-elevated hover:text-text-primary transition-colors duration-150;
+  }
+
+  .btn-danger {
+    @apply px-3.5 py-2 rounded text-sm font-medium bg-status-red text-white
+           hover:bg-status-red/90 transition-colors duration-150;
+  }
+
+  /* === GOVERNMENT CARD === */
+  .gov-card {
+    @apply bg-bg-surface border border-border-default rounded-md shadow-card;
+  }
+
+  .gov-card-secondary {
+    @apply bg-bg-secondary border border-border-subtle rounded-md;
+  }
+
+  /* === DATA TABLE === */
+  .data-table {
+    @apply w-full text-sm text-left;
+  }
+
+  .data-table th {
+    @apply px-3 py-2.5 text-2xs font-semibold uppercase tracking-wide
+           text-text-muted bg-bg-secondary border-b border-border-default;
+  }
+
+  .data-table td {
+    @apply px-3 py-2.5 border-b border-border-subtle text-text-primary;
+  }
+
+  .data-table tbody tr:hover {
+    @apply bg-bg-secondary cursor-pointer;
+  }
+
+  .data-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  /* === STATUS BADGES === */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-2xs font-semibold uppercase tracking-wide;
+  }
+
+  .badge-green  { @apply badge bg-status-green-bg text-status-green; }
+  .badge-amber  { @apply badge bg-status-amber-bg text-status-amber; }
+  .badge-red    { @apply badge bg-status-red-bg text-status-red; }
+  .badge-blue   { @apply badge bg-status-blue-bg text-status-blue; }
+  .badge-gray   { @apply badge bg-bg-elevated text-text-muted; }
+  .badge-accent { @apply badge bg-inv-accent-bg text-inv-accent; }
+
+  /* === SECTION HEADING === */
+  .section-label {
+    @apply text-2xs font-semibold uppercase tracking-widest text-text-muted;
+  }
+
+  .section-title {
+    @apply text-base font-semibold text-text-primary;
+  }
+
+  /* === FORM CONTROLS === */
+  .form-input {
+    @apply w-full px-3 py-2 rounded border border-border-default bg-bg-surface
+           text-sm text-text-primary placeholder-text-muted
+           focus:outline-none focus:ring-2 focus:ring-gov-blue/25 focus:border-gov-blue
+           transition-colors duration-150;
+  }
+
+  .form-label {
+    @apply block text-xs font-medium text-text-secondary mb-1;
+  }
+
+  .form-select {
+    @apply w-full px-3 py-2 rounded border border-border-default bg-bg-surface
+           text-sm text-text-primary
+           focus:outline-none focus:ring-2 focus:ring-gov-blue/25 focus:border-gov-blue
+           transition-colors duration-150;
+  }
+
+  /* === MONO DATA DISPLAY === */
+  .mono-address {
+    @apply font-mono text-xs text-text-secondary tracking-tight;
+  }
+
+  .mono-hash {
+    @apply font-mono text-2xs text-text-muted tracking-tight;
+  }
+
+  /* === SIDE NAV === */
+  .nav-item {
+    @apply flex items-center gap-2.5 px-3 py-2 rounded text-sm font-medium
+           text-text-secondary hover:bg-bg-elevated hover:text-text-primary
+           transition-colors duration-150 cursor-pointer;
+  }
+
+  .nav-item-active {
+    @apply flex items-center gap-2.5 px-3 py-2 rounded text-sm font-medium
+           text-gov-blue bg-gov-blue-light cursor-pointer;
+  }
+
+  /* === PANEL HEADER === */
+  .panel-header {
+    @apply flex items-center justify-between px-4 py-3
+           border-b border-border-default bg-bg-secondary;
+  }
+
+  /* === RISK LEVELS === */
+  .risk-high   { @apply text-status-red font-semibold; }
+  .risk-medium { @apply text-status-amber font-semibold; }
+  .risk-low    { @apply text-status-green font-semibold; }
+
+  /* === DEMO DATA INDICATOR === */
+  .demo-mode-banner {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-2xs font-mono
+           font-semibold text-status-amber bg-status-amber-bg border border-status-amber/20;
+  }
+
+  /* === SANDBOX BANNER === */
+  .sandbox-banner {
+    @apply flex items-center gap-2 px-4 py-2 bg-status-amber-bg
+           border-b border-status-amber/20 text-xs text-status-amber;
+  }
+}
+
+@layer utilities {
+  /* Graph workspace grid background */
+  .graph-grid-bg {
+    background-color: #F0F4F8;
+    background-image: radial-gradient(rgba(18, 59, 99, 0.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* Subtle text-overflow fade */
+  .fade-right {
+    mask-image: linear-gradient(to right, black 70%, transparent 100%);
+  }
+}
+
+/* === SCROLLBARS === */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D9E0E7; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #B8C4CE; }
+
+/* === SELECTION === */
+::selection {
+  background: rgba(18, 59, 99, 0.15);
+  color: #17212B;
+}
+
+/* === NODE HIGHLIGHT ANIMATIONS === */
+@keyframes nodeSelect {
+  0%   { box-shadow: 0 0 0 0 rgba(18, 59, 99, 0.4); }
+  70%  { box-shadow: 0 0 0 8px rgba(18, 59, 99, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(18, 59, 99, 0); }
+}
+
+.node-selected {
+  animation: nodeSelect 0.6s ease-out;
+}
+
+/* === TRACE PATH HIGHLIGHT === */
+.trace-active { stroke: #B06B24 !important; stroke-width: 3px !important; }
+.trace-faded  { opacity: 0.2; }
+
+/* === DOCUMENT PREVIEW (A4 letter) === */
+.doc-preview {
+  background: #FFFFFF;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 48px 56px;
+  box-shadow: 0 2px 24px rgba(23, 33, 43, 0.12);
+  font-family: 'Inter', 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #17212B;
+}
+
+.doc-preview .doc-letterhead {
+  border-bottom: 2px solid #123B63;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.doc-preview .doc-field {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 4px;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.doc-preview .doc-field-label {
+  font-weight: 600;
+  color: #52606D;
+}
+
+.doc-preview p {
+  margin-bottom: 12px;
+}
+
+.doc-preview .doc-subject {
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: underline;
+  margin: 20px 0 16px;
+}
+
+/* === PRINT STYLES === */
+@media print {
+  .no-print { display: none !important; }
+  .doc-preview { box-shadow: none; padding: 0; }
+  body { background: white; }
+}

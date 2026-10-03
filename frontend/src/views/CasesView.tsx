@@ -1,0 +1,764 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Briefcase, Search, Plus, ArrowRight, User, MapPin,
+  Calendar, AlertCircle, FileText, Shield, ChevronRight,
+  LayoutGrid, List, Filter, X, CheckCircle, Clock, Upload
+} from 'lucide-react';
+import { api } from '../api';
+import { CaseRecord } from '../types';
+
+interface CasesViewProps {
+  onInvestigateWallet: (address: string) => void;
+  onNavigateToSahyog: (walletAddress: string, vaspName: string) => void;
+  onOpenReport: (caseId: string) => void;
+}
+
+const COMPLAINT_CATEGORIES = [
+  'Investment / Trading Fraud',
+  'Romance / Social Engineering Scam',
+  'Job / Employment Fraud',
+  'Loan App Fraud',
+  'KYC / Impersonation Fraud',
+  'Cryptocurrency Exchange Fraud',
+  'Cross-Border Money Mule',
+  'Other Cybercrime',
+];
+
+const priorityBadge = (p: string) => {
+  if (p === 'CRITICAL') return 'badge-red';
+  if (p === 'HIGH') return 'badge-amber';
+  if (p === 'MEDIUM') return 'badge-blue';
+  return 'badge-gray';
+};
+
+const statusBadge = (s: string) => {
+  if (s === 'CLOSED_RECOVERED' || s === 'RESOLVED') return 'badge-green';
+  if (s === 'CHARGE_SHEETED') return 'badge-blue';
+  if (s === 'ACTION_REQUIRED') return 'badge-red';
+  if (s === 'ACTIVE_INVESTIGATION' || s === 'ACTIVE') return 'badge-blue';
+  if (s === 'EVIDENCE_ATTACHED') return 'badge-green';
+  if (s === 'SAHYOG_DISCLOSED') return 'badge-amber';
+  return 'badge-gray';
+};
+
+// --- Complaint Registration Form ---
+const ComplaintForm: React.FC<{ onSubmit: (data: any) => void; onCancel: () => void }> = ({ onSubmit, onCancel }) => {
+  const [form, setForm] = useState({
+    complaint_id: `CP-2026-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+    date: new Date().toISOString().split('T')[0],
+    complainant: '',
+    category: '',
+    description: '',
+    reference_number: '',
+    jurisdiction: '',
+    investigating_unit: 'Cyber Police Station, Pune City',
+    priority: 'MEDIUM',
+    wallet_address: '',
+    tx_hash: '',
+    chain: '',
+    asset: '',
+    amount: '',
+    suspected_vasp: '',
+    known_domain: '',
+  });
+
+  const set = (k: string, v: string) => setForm(prev => ({ ...prev, [k]: v }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(form);
+  };
+
+  return (
+    <div className="bg-bg-surface border border-border-default rounded-md shadow-panel p-6 animate-fade-in">
+      <div className="flex items-center justify-between mb-5 pb-4 border-b border-border-default">
+        <div>
+          <div className="section-label mb-1">Complaint Registration</div>
+          <h2 className="text-lg font-semibold text-text-primary">Register New Complaint</h2>
+        </div>
+        <button onClick={onCancel} className="p-1.5 rounded hover:bg-bg-elevated text-text-muted">
+          <X className="w-4 h-4" />
+        </button>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Section 1: Complaint Details */}
+        <div>
+          <div className="section-label mb-3">Complaint Details</div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="form-label">Complaint ID (Auto-generated)</label>
+              <input type="text" value={form.complaint_id} readOnly className="form-input bg-bg-secondary font-mono text-text-muted" />
+            </div>
+            <div>
+              <label className="form-label">Date of Complaint</label>
+              <input type="date" value={form.date} onChange={e => set('date', e.target.value)} className="form-input" />
+            </div>
+            <div>
+              <label className="form-label">Complainant / Source *</label>
+              <input type="text" value={form.complainant} onChange={e => set('complainant', e.target.value)} placeholder="Name of complainant or agency" className="form-input" required />
+            </div>
+            <div>
+              <label className="form-label">Complaint Category *</label>
+              <select value={form.category} onChange={e => set('category', e.target.value)} className="form-select" required>
+                <option value="">Select category...</option>
+                {COMPLAINT_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <div className="col-span-2">
+              <label className="form-label">Description *</label>
+              <textarea
+                value={form.description}
+                onChange={e => set('description', e.target.value)}
+                rows={3}
+                placeholder="Describe the complaint in detail..."
+                className="form-input resize-none"
+                required
+              />
+            </div>
+            <div>
+              <label className="form-label">Reference Number (FIR / NCRP)</label>
+              <input type="text" value={form.reference_number} onChange={e => set('reference_number', e.target.value)} placeholder="FIR No. or NCRP Reference" className="form-input" />
+            </div>
+            <div>
+              <label className="form-label">Jurisdiction</label>
+              <input type="text" value={form.jurisdiction} onChange={e => set('jurisdiction', e.target.value)} placeholder="State / District" className="form-input" />
+            </div>
+            <div>
+              <label className="form-label">Investigating Unit</label>
+              <input type="text" value={form.investigating_unit} onChange={e => set('investigating_unit', e.target.value)} className="form-input" />
+            </div>
+            <div>
+              <label className="form-label">Priority</label>
+              <select value={form.priority} onChange={e => set('priority', e.target.value)} className="form-select">
+                <option value="CRITICAL">Critical</option>
+                <option value="HIGH">High</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LOW">Low</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 2: Financial / Blockchain Details */}
+        <div>
+          <div className="section-label mb-3">Financial / Blockchain Details <span className="normal-case font-normal text-text-muted">(if available)</span></div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="form-label">Wallet Address</label>
+              <input type="text" value={form.wallet_address} onChange={e => set('wallet_address', e.target.value)} placeholder="0x... or Tron address" className="form-input font-mono text-xs" />
+            </div>
+            <div>
+              <label className="form-label">Transaction Hash</label>
+              <input type="text" value={form.tx_hash} onChange={e => set('tx_hash', e.target.value)} placeholder="0x..." className="form-input font-mono text-xs" />
+            </div>
+            <div>
+              <label className="form-label">Blockchain / Chain</label>
+              <select value={form.chain} onChange={e => set('chain', e.target.value)} className="form-select">
+                <option value="">Select chain...</option>
+                <option value="Ethereum">Ethereum (EVM)</option>
+                <option value="Tron">Tron (TRC-20)</option>
+                <option value="Bitcoin">Bitcoin</option>
+                <option value="BNB Chain">BNB Smart Chain</option>
+                <option value="Polygon">Polygon</option>
+              </select>
+            </div>
+            <div>
+              <label className="form-label">Asset / Token</label>
+              <input type="text" value={form.asset} onChange={e => set('asset', e.target.value)} placeholder="ETH, USDT, BTC..." className="form-input" />
+            </div>
+            <div>
+              <label className="form-label">Amount (approx. INR loss)</label>
+              <input type="text" value={form.amount} onChange={e => set('amount', e.target.value)} placeholder="₹ amount" className="form-input" />
+            </div>
+            <div>
+              <label className="form-label">Suspected VASP / Exchange</label>
+              <input type="text" value={form.suspected_vasp} onChange={e => set('suspected_vasp', e.target.value)} placeholder="Exchange name if known" className="form-input" />
+            </div>
+            <div>
+              <label className="form-label">Known Domain / Identifier</label>
+              <input type="text" value={form.known_domain} onChange={e => set('known_domain', e.target.value)} placeholder="Website / app / UPI ID..." className="form-input" />
+            </div>
+          </div>
+
+          {/* Attachments */}
+          <div className="mt-4 p-3 border-2 border-dashed border-border-default rounded-md flex flex-col items-center justify-center text-center">
+            <Upload className="w-5 h-5 text-text-muted mb-1" />
+            <div className="text-xs font-medium text-text-secondary">Attach documents</div>
+            <div className="text-2xs text-text-muted">Screenshots, bank statements, FIR copy (PDF, JPG, PNG)</div>
+            <button type="button" className="btn-secondary text-xs mt-2">Choose files</button>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-4 border-t border-border-default">
+          <button type="button" onClick={onCancel} className="btn-secondary text-xs">Cancel</button>
+          <div className="flex gap-3">
+            <button type="button" className="btn-secondary text-xs">Save as Draft</button>
+            <button type="submit" className="btn-primary text-xs flex items-center gap-1.5">
+              <CheckCircle className="w-3.5 h-3.5" />
+              Register Complaint
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+// --- Case Detail Panel ---
+const CaseDetailPanel: React.FC<{
+  caseItem: CaseRecord;
+  onClose: () => void;
+  onInvestigate: (wallet: string) => void;
+  onSahyog: (wallet: string, vasp: string) => void;
+  onReport: (caseId: string) => void;
+}> = ({ caseItem, onClose, onInvestigate, onSahyog, onReport }) => (
+  <div className="h-full flex flex-col bg-bg-surface border-l border-border-default animate-slide-in">
+    <div className="panel-header shrink-0">
+      <div>
+        <div className="font-mono text-xs font-bold text-gov-blue">{caseItem.id}</div>
+        <div className="text-sm font-semibold text-text-primary mt-0.5">{caseItem.title}</div>
+      </div>
+      <button onClick={onClose} className="p-1 hover:bg-bg-elevated rounded text-text-muted">
+        <X className="w-4 h-4" />
+      </button>
+    </div>
+
+    <div className="flex-1 overflow-y-auto divide-y divide-border-subtle">
+      {/* Status row */}
+      <div className="px-4 py-3 flex items-center gap-2 flex-wrap">
+        <span className={statusBadge(caseItem.status)}>{caseItem.status}</span>
+        <span className={priorityBadge(caseItem.priority)}>{caseItem.priority}</span>
+        {caseItem.tags?.map(t => <span key={t} className="badge badge-gray">{t}</span>)}
+      </div>
+
+      {/* Synopsis */}
+      <div className="px-4 py-3">
+        <div className="section-label mb-1">Synopsis</div>
+        <p className="text-xs text-text-secondary leading-relaxed">{caseItem.synopsis}</p>
+      </div>
+
+      {/* Key details */}
+      <div className="px-4 py-3 space-y-2">
+        <div className="section-label mb-2">Details &amp; Precedent Record</div>
+        {[
+          { label: 'Classification', value: caseItem.case_type === 'PREVIOUS' ? 'Previous / Resolved Precedent' : 'Current Active Investigation' },
+          { label: 'FIR Number', value: caseItem.fir_number },
+          { label: 'Police Station', value: caseItem.police_station },
+          { label: 'Jurisdiction / Court', value: caseItem.court_name || caseItem.state },
+          { label: 'Charge-Sheet Ref', value: caseItem.charge_sheet_ref || (caseItem.status === 'CHARGE_SHEETED' ? 'Filed before Court' : 'Pre-charge phase') },
+          { label: 'NCRP Token', value: caseItem.ncrp_ack_number || '1930 Verified' },
+          { label: 'Investigator', value: caseItem.investigator },
+          { label: 'Reported Loss', value: `₹${(caseItem.loss_amount_inr / 100000).toFixed(1)} Lakh` },
+          { label: 'Recovered / Frozen', value: caseItem.recovery_amount_inr ? `₹${(caseItem.recovery_amount_inr / 100000).toFixed(1)} Lakh` : 'Under tracing' },
+          { label: 'Accused Identified', value: caseItem.accused_count ? `${caseItem.accused_count} Syndicate Members` : '4 Mules' },
+          { label: 'Evidence Items', value: String(caseItem.evidence_count) },
+        ].map(row => (
+          <div key={row.label} className="flex justify-between text-xs">
+            <span className="text-text-muted">{row.label}</span>
+            <span className="font-medium text-text-primary text-right max-w-[160px] truncate">{row.value || '—'}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Victim wallet */}
+      <div className="px-4 py-3">
+        <div className="section-label mb-1">Victim Wallet</div>
+        <div className="mono-address break-all">{caseItem.victim_wallet}</div>
+      </div>
+
+      {/* Identified VASPs */}
+      {caseItem.identified_vasps?.length > 0 && (
+        <div className="px-4 py-3">
+          <div className="section-label mb-2">Identified VASPs</div>
+          {caseItem.identified_vasps.map(v => (
+            <div key={v} className="flex items-center justify-between py-1">
+              <span className="text-sm text-text-primary">{v}</span>
+              <button
+                onClick={() => onSahyog(caseItem.victim_wallet, v)}
+                className="text-2xs font-medium text-gov-blue hover:underline flex items-center gap-1"
+              >
+                <Shield className="w-3 h-3" /> SAHYOG
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Actions */}
+      <div className="px-4 py-3 space-y-2">
+        <button
+          onClick={() => onInvestigate(caseItem.victim_wallet)}
+          className="btn-primary w-full text-xs flex items-center justify-center gap-1.5"
+        >
+          <Search className="w-3.5 h-3.5" /> Investigate Network
+        </button>
+        <button
+          onClick={() => onReport(caseItem.id)}
+          className="btn-secondary w-full text-xs flex items-center justify-center gap-1.5"
+        >
+          <FileText className="w-3.5 h-3.5" /> Generate Report
+        </button>
+        <button
+          onClick={() => onSahyog(caseItem.victim_wallet, caseItem.identified_vasps[0] || '')}
+          className="btn-secondary w-full text-xs flex items-center justify-center gap-1.5"
+        >
+          <Shield className="w-3.5 h-3.5 text-status-amber" /> Create SAHYOG Request
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+// Seed complaints for demo
+const SEED_COMPLAINTS = [
+  {
+    id: 'CP-2026-0841', date: '03 Oct 2026', complainant: 'S. K. Verma (via NCRP)',
+    category: 'Investment / Trading Fraud', description: 'Victim was lured into a fake investment platform and lost ₹42.8 Lakh in ETH transactions.',
+    jurisdiction: 'Pune, Maharashtra', priority: 'HIGH', status: 'CONVERTED',
+    wallet: '0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97',
+    linked_case: 'NTR-DEMO-001',
+  },
+  {
+    id: 'CP-2026-0842', date: '02 Oct 2026', complainant: 'R. P. Singh',
+    category: 'Romance / Social Engineering Scam', description: 'Victim sent USDT to a fraudulent wallet after online relationship manipulation. Total loss ₹8.5 Lakh.',
+    jurisdiction: 'Mumbai, Maharashtra', priority: 'MEDIUM', status: 'PENDING',
+    wallet: '0x9912e84c98f5b89a456102dc840b8a1c970ee2f',
+    linked_case: null,
+  },
+  {
+    id: 'CP-2026-0840', date: '01 Oct 2026', complainant: 'Cyber PS Bengaluru',
+    category: 'Cryptocurrency Exchange Fraud', description: 'Multiple victims of a cloned exchange website. Funds traced to TRC-20 USDT on Tron network.',
+    jurisdiction: 'Bengaluru, Karnataka', priority: 'CRITICAL', status: 'UNDER_INVESTIGATION',
+    wallet: 'TRx91844jK810294719024870192840918',
+    linked_case: 'NTR-2041',
+  },
+];
+
+export const CasesView: React.FC<CasesViewProps> = ({
+  onInvestigateWallet,
+  onNavigateToSahyog,
+  onOpenReport,
+}) => {
+  const [activeTab, setActiveTab] = useState<'cases' | 'complaints'>('cases');
+  const [statusFilter, setStatusFilter] = useState<'ALL' | 'CURRENT' | 'PREVIOUS' | 'ACTION_REQUIRED' | 'RECOVERED' | 'CHARGE_SHEETED'>('ALL');
+  const [cases, setCases] = useState<CaseRecord[]>([]);
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+  const [selectedCase, setSelectedCase] = useState<CaseRecord | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showComplaintForm, setShowComplaintForm] = useState(false);
+  const [complaints, setComplaints] = useState(SEED_COMPLAINTS);
+  const [registeredCount, setRegisteredCount] = useState(0);
+
+  useEffect(() => {
+    api.getCases().then(c => {
+      setCases(c);
+      if (c.length > 0) setSelectedCase(c[0]);
+    });
+  }, []);
+
+  const currentCasesCount = cases.filter(c => c.case_type === 'CURRENT' || (!c.case_type && (c.status.includes('ACTIVE') || c.status.includes('REQUIRED') || c.status.includes('ATTACHED') || c.status.includes('DISCLOSED')))).length;
+  const previousCasesCount = cases.filter(c => c.case_type === 'PREVIOUS' || c.status.includes('RECOVERED') || c.status === 'CHARGE_SHEETED' || c.status === 'RESOLVED').length;
+  const totalFraudInr = cases.reduce((acc, c) => acc + (c.loss_amount_inr || 0), 0);
+  const totalRecoveredInr = cases.reduce((acc, c) => acc + (c.recovery_amount_inr || 0), 0);
+
+  const filtered = cases.filter(c => {
+    const matchesSearch =
+      c.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.fir_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.state?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    if (!matchesSearch) return false;
+
+    if (statusFilter === 'CURRENT') {
+      return c.case_type === 'CURRENT' || (!c.case_type && (c.status.includes('ACTIVE') || c.status.includes('REQUIRED') || c.status.includes('ATTACHED') || c.status.includes('DISCLOSED')));
+    }
+    if (statusFilter === 'PREVIOUS') {
+      return c.case_type === 'PREVIOUS' || c.status.includes('RECOVERED') || c.status === 'CHARGE_SHEETED' || c.status === 'RESOLVED';
+    }
+    if (statusFilter === 'ACTION_REQUIRED') {
+      return c.status === 'ACTION_REQUIRED';
+    }
+    if (statusFilter === 'RECOVERED') {
+      return c.status === 'CLOSED_RECOVERED' || c.status === 'RESOLVED';
+    }
+    if (statusFilter === 'CHARGE_SHEETED') {
+      return c.status === 'CHARGE_SHEETED';
+    }
+    return true;
+  });
+
+  const handleComplaintSubmit = (data: any) => {
+    setComplaints(prev => [{
+      id: data.complaint_id,
+      date: data.date,
+      complainant: data.complainant,
+      category: data.category,
+      description: data.description,
+      jurisdiction: data.jurisdiction,
+      priority: data.priority,
+      status: 'PENDING',
+      wallet: data.wallet_address,
+      linked_case: null,
+    }, ...prev]);
+    setRegisteredCount(n => n + 1);
+    setShowComplaintForm(false);
+  };
+
+  const TABS = [
+    { id: 'cases', label: 'Registered FIR Dockets', count: cases.length },
+    { id: 'complaints', label: 'Citizen Complaints (NCRP)', count: complaints.length + registeredCount },
+  ];
+
+  return (
+    <div className="bg-bg-base min-h-screen pb-10">
+      {/* Page header */}
+      <div className="bg-bg-surface border-b border-border-default">
+        <div className="gov-container py-3.5 flex items-center justify-between">
+          <div>
+            <div className="section-label mb-0.5">National Criminal Case Repository</div>
+            <h1 className="text-lg font-bold text-text-primary">FIR Dockets &amp; Digital Crime Records</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            {activeTab === 'complaints' && (
+              <button
+                onClick={() => setShowComplaintForm(true)}
+                className="btn-primary text-xs flex items-center gap-1.5"
+              >
+                <Plus className="w-3.5 h-3.5" /> Register Complaint
+              </button>
+            )}
+            {activeTab === 'cases' && (
+              <button className="btn-primary text-xs flex items-center gap-1.5">
+                <Plus className="w-3.5 h-3.5" /> + Register New FIR
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="gov-container pt-4">
+        {/* Primary Tabs */}
+        <div className="flex items-center gap-1 border-b border-border-default mb-4">
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold border-b-2 transition-colors -mb-px ${
+                activeTab === tab.id
+                  ? 'border-gov-blue text-gov-blue'
+                  : 'border-transparent text-text-secondary hover:text-text-primary hover:border-border-strong'
+              }`}
+            >
+              {tab.label}
+              <span className={`text-2xs px-1.5 py-0.2 rounded font-semibold ${
+                activeTab === tab.id ? 'bg-blue-100 text-gov-blue' : 'bg-slate-100 text-slate-600'
+              }`}>
+                {tab.count}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* National Docket Metrics Strip */}
+        {activeTab === 'cases' && (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+            <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                Current Ongoing Cases
+              </div>
+              <div className="text-xl font-bold font-mono text-gov-blue mt-0.5">
+                {currentCasesCount} Active Dockets
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5">
+                Under active on-chain tracing
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                Previous / Resolved Cases
+              </div>
+              <div className="text-xl font-bold font-mono text-emerald-700 mt-0.5">
+                {previousCasesCount} Precedents
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5">
+                Restituted or charge-sheeted in court
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                Total Fraud Traced
+              </div>
+              <div className="text-xl font-bold font-mono text-slate-900 mt-0.5">
+                ₹{(totalFraudInr / 10000000).toFixed(2)} Crore
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5">
+                15 FIR Dockets across 7 States
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-xs">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                Restituted &amp; Attached Assets
+              </div>
+              <div className="text-xl font-bold font-mono text-emerald-600 mt-0.5">
+                ₹{(totalRecoveredInr / 10000000).toFixed(2)} Crore
+              </div>
+              <div className="text-[11px] text-emerald-700 font-semibold mt-0.5">
+                {((totalRecoveredInr / (totalFraudInr || 1)) * 100).toFixed(1)}% Capital Recovery Rate
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Status Lifecycle Filter Chips (Previous & Current Cases) */}
+        {activeTab === 'cases' && (
+          <div className="flex flex-wrap items-center gap-1.5 mb-4 text-2xs">
+            <span className="font-semibold text-slate-500 mr-1">Case Filter:</span>
+            {[
+              { id: 'ALL', label: `All Cases (${cases.length})` },
+              { id: 'CURRENT', label: `Current Active Cases (${currentCasesCount})` },
+              { id: 'PREVIOUS', label: `Previous Precedents (${previousCasesCount})` },
+              { id: 'ACTION_REQUIRED', label: `Action Required (${cases.filter(c => c.status === 'ACTION_REQUIRED').length})` },
+              { id: 'RECOVERED', label: `100% Recovered (${cases.filter(c => c.status.includes('RECOVERED') || c.status.includes('RESOLVED')).length})` },
+              { id: 'CHARGE_SHEETED', label: `Charge-Sheeted in Court (${cases.filter(c => c.status === 'CHARGE_SHEETED').length})` },
+            ].map(chip => (
+              <button
+                key={chip.id}
+                type="button"
+                onClick={() => setStatusFilter(chip.id as any)}
+                className={`px-2.5 py-1 rounded border font-medium transition-colors ${
+                  statusFilter === chip.id
+                    ? 'bg-gov-blue text-white border-gov-blue font-bold shadow-xs'
+                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                }`}
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Complaint Registration Form */}
+        {showComplaintForm && (
+          <div className="mb-5">
+            <ComplaintForm onSubmit={handleComplaintSubmit} onCancel={() => setShowComplaintForm(false)} />
+          </div>
+        )}
+
+        {/* CASES TAB */}
+        {activeTab === 'cases' && (
+          <div className="flex gap-5" style={{ minHeight: 'calc(100vh - 220px)' }}>
+            {/* Cases list/table */}
+            <div className="flex-1 min-w-0">
+              {/* Toolbar */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="relative flex-1 max-w-sm">
+                  <Search className="w-3.5 h-3.5 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search cases..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    className="form-input pl-8 text-xs py-1.5"
+                  />
+                </div>
+                <div className="flex items-center border border-border-default rounded overflow-hidden">
+                  <button onClick={() => setViewMode('list')} className={`p-1.5 transition-colors ${viewMode === 'list' ? 'bg-gov-blue text-white' : 'text-text-muted hover:bg-bg-elevated'}`}><List className="w-3.5 h-3.5" /></button>
+                  <button onClick={() => setViewMode('grid')} className={`p-1.5 transition-colors ${viewMode === 'grid' ? 'bg-gov-blue text-white' : 'text-text-muted hover:bg-bg-elevated'}`}><LayoutGrid className="w-3.5 h-3.5" /></button>
+                </div>
+              </div>
+
+              {viewMode === 'list' ? (
+                <div className="gov-card overflow-hidden">
+                  <table className="data-table">
+                    <thead>
+                      <tr>
+                        <th>Docket</th>
+                        <th>Classification</th>
+                        <th>Title &amp; FIR</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Loss / Recovered</th>
+                        <th>Target VASP</th>
+                        <th>Jurisdiction / Court</th>
+                        <th className="text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filtered.map(item => {
+                        const isPrev = item.case_type === 'PREVIOUS' || item.status.includes('RECOVERED') || item.status === 'CHARGE_SHEETED';
+                        return (
+                          <tr
+                            key={item.id}
+                            onClick={() => setSelectedCase(item)}
+                            className={selectedCase?.id === item.id ? 'bg-gov-blue-light' : ''}
+                          >
+                            <td>
+                              <span className="font-mono text-xs font-bold text-gov-blue">{item.id}</span>
+                            </td>
+                            <td>
+                              {isPrev ? (
+                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-300">
+                                  PREVIOUS
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-50 text-blue-700 border border-blue-300">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+                                  ACTIVE
+                                </span>
+                              )}
+                            </td>
+                            <td>
+                              <div className="font-medium text-xs max-w-[220px] truncate text-slate-900">{item.title}</div>
+                              <div className="text-2xs font-mono text-text-muted">{item.fir_number} · {item.police_station}</div>
+                            </td>
+                            <td><span className={priorityBadge(item.priority)}>{item.priority}</span></td>
+                            <td><span className={statusBadge(item.status)}>{item.status}</span></td>
+                            <td>
+                              <div className="font-mono text-xs font-bold text-slate-900">
+                                ₹{(item.loss_amount_inr / 100000).toFixed(1)}L
+                              </div>
+                              {item.recovery_amount_inr ? (
+                                <div className="text-[10px] font-mono text-emerald-700 font-semibold">
+                                  ✓ ₹{(item.recovery_amount_inr / 100000).toFixed(1)}L frozen
+                                </div>
+                              ) : (
+                                <div className="text-[10px] font-mono text-slate-400">
+                                  tracing in progress
+                                </div>
+                              )}
+                            </td>
+                            <td className="text-xs text-text-secondary truncate max-w-[120px] font-medium">{item.identified_vasps?.[0] || '—'}</td>
+                            <td>
+                              <div className="text-xs text-slate-800 font-medium truncate max-w-[130px]">{item.court_name || item.state}</div>
+                              <div className="text-[10px] text-slate-400 font-mono truncate">{item.ncrp_ack_number || item.investigator}</div>
+                            </td>
+                            <td className="text-right">
+                              <button
+                                onClick={e => { e.stopPropagation(); onInvestigateWallet(item.victim_wallet); }}
+                                className="text-xs font-semibold text-gov-blue hover:underline"
+                              >
+                                Investigate
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {filtered.map(item => (
+                    <button
+                      key={item.id}
+                      onClick={() => setSelectedCase(item)}
+                      className={`gov-card p-4 text-left space-y-3 hover:border-gov-blue transition-colors ${
+                        selectedCase?.id === item.id ? 'border-gov-blue bg-gov-blue-light/20' : ''
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-xs font-bold text-gov-blue">{item.id}</span>
+                        <span className={statusBadge(item.status)}>{item.status}</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-text-primary text-sm">{item.title}</div>
+                        <div className="text-2xs font-mono text-text-muted mt-0.5">{item.fir_number} · {item.police_station}</div>
+                      </div>
+                      <p className="text-xs text-text-secondary line-clamp-2">{item.synopsis}</p>
+                      <div className="flex items-center justify-between pt-2 border-t border-border-subtle">
+                        <div className="flex items-center gap-2">
+                          <span className={priorityBadge(item.priority)}>{item.priority}</span>
+                          <span className="font-mono text-2xs text-status-amber">₹{(item.loss_amount_inr / 100000).toFixed(1)}L</span>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-text-muted" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Case detail side panel */}
+            {selectedCase && (
+              <div className="w-72 shrink-0">
+                <CaseDetailPanel
+                  caseItem={selectedCase}
+                  onClose={() => setSelectedCase(null)}
+                  onInvestigate={onInvestigateWallet}
+                  onSahyog={onNavigateToSahyog}
+                  onReport={onOpenReport}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* COMPLAINTS TAB */}
+        {activeTab === 'complaints' && (
+          <div className="gov-card overflow-hidden">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Complaint ID</th>
+                  <th>Date</th>
+                  <th>Complainant</th>
+                  <th>Category</th>
+                  <th>Jurisdiction</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Linked Case</th>
+                  <th className="text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {complaints.map(c => (
+                  <tr key={c.id}>
+                    <td><span className="font-mono text-xs font-bold text-gov-blue">{c.id}</span></td>
+                    <td className="text-xs">{c.date}</td>
+                    <td className="text-xs font-medium max-w-[120px] truncate">{c.complainant}</td>
+                    <td className="text-xs text-text-secondary max-w-[150px] truncate">{c.category}</td>
+                    <td className="text-xs text-text-secondary">{c.jurisdiction}</td>
+                    <td><span className={priorityBadge(c.priority)}>{c.priority}</span></td>
+                    <td>
+                      <span className={`badge ${
+                        c.status === 'CONVERTED' ? 'badge-green' :
+                        c.status === 'UNDER_INVESTIGATION' ? 'badge-blue' :
+                        c.status === 'PENDING' ? 'badge-amber' : 'badge-gray'
+                      }`}>{c.status.replace(/_/g, ' ')}</span>
+                    </td>
+                    <td>
+                      {c.linked_case
+                        ? <span className="font-mono text-xs text-gov-blue font-bold">{c.linked_case}</span>
+                        : <span className="text-2xs text-text-muted">—</span>
+                      }
+                    </td>
+                    <td className="text-right">
+                      {!c.linked_case ? (
+                        <button className="text-xs font-medium text-gov-blue hover:underline whitespace-nowrap">
+                          Convert to Case
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => c.wallet && onInvestigateWallet(c.wallet)}
+                          className="text-xs font-medium text-gov-blue hover:underline"
+                        >
+                          Investigate
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
