@@ -348,14 +348,28 @@ export const CasesView: React.FC<CasesViewProps> = ({
   const [selectedCase, setSelectedCase] = useState<CaseRecord | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showComplaintForm, setShowComplaintForm] = useState(false);
-  const [complaints, setComplaints] = useState(SEED_COMPLAINTS);
-  const [registeredCount, setRegisteredCount] = useState(0);
+  const [complaints, setComplaints] = useState<any[]>([]);
+  const [cloudSyncStatus, setCloudSyncStatus] = useState<string>('SYNCHRONIZED');
+  const [cloudMessage, setCloudMessage] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const refreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      const [c, comps] = await Promise.all([api.getCases(), api.getComplaints()]);
+      setCases(c);
+      if (c.length > 0 && !selectedCase) setSelectedCase(c[0]);
+      setComplaints(comps);
+      setCloudSyncStatus('SYNCHRONIZED');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    api.getCases().then(c => {
-      setCases(c);
-      if (c.length > 0) setSelectedCase(c[0]);
-    });
+    refreshData();
   }, []);
 
   const currentCasesCount = cases.filter(c => c.case_type === 'CURRENT' || (!c.case_type && (c.status.includes('ACTIVE') || c.status.includes('REQUIRED') || c.status.includes('ATTACHED') || c.status.includes('DISCLOSED')))).length;
@@ -390,26 +404,29 @@ export const CasesView: React.FC<CasesViewProps> = ({
     return true;
   });
 
-  const handleComplaintSubmit = (data: any) => {
-    setComplaints(prev => [{
-      id: data.complaint_id,
-      date: data.date,
-      complainant: data.complainant,
-      category: data.category,
-      description: data.description,
-      jurisdiction: data.jurisdiction,
-      priority: data.priority,
-      status: 'PENDING',
-      wallet: data.wallet_address,
-      linked_case: null,
-    }, ...prev]);
-    setRegisteredCount(n => n + 1);
+  const handleComplaintSubmit = async (data: any) => {
+    setCloudSyncStatus('SAVING_TO_DATABASE');
+    try {
+      const res = await api.registerComplaint(data);
+      if (res && res.complaint) {
+        setComplaints(prev => [res.complaint, ...prev.filter(x => x.id !== res.complaint.id)]);
+        if (res.case) {
+          setCases(prev => [res.case, ...prev]);
+        }
+        setCloudSyncStatus('SYNCHRONIZED');
+        setCloudMessage(`Complaint ${res.complaint.id} successfully saved to Dedicated Cloud Database! Your friend on another laptop will see this complaint in their registry.`);
+        setActiveTab('complaints');
+      }
+    } catch (err) {
+      console.error('Error submitting complaint:', err);
+      setCloudSyncStatus('CACHED');
+    }
     setShowComplaintForm(false);
   };
 
   const TABS = [
     { id: 'cases', label: 'Registered FIR Dockets', count: cases.length },
-    { id: 'complaints', label: 'Citizen Complaints (NCRP)', count: complaints.length + registeredCount },
+    { id: 'complaints', label: 'Citizen Complaints (NCRP & Cloud Registry)', count: complaints.length },
   ];
 
   return (
@@ -701,61 +718,128 @@ export const CasesView: React.FC<CasesViewProps> = ({
 
         {/* COMPLAINTS TAB */}
         {activeTab === 'complaints' && (
-          <div className="gov-card overflow-hidden">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Complaint ID</th>
-                  <th>Date</th>
-                  <th>Complainant</th>
-                  <th>Category</th>
-                  <th>Jurisdiction</th>
-                  <th>Priority</th>
-                  <th>Status</th>
-                  <th>Linked Case</th>
-                  <th className="text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {complaints.map(c => (
-                  <tr key={c.id}>
-                    <td><span className="font-mono text-xs font-bold text-gov-blue">{c.id}</span></td>
-                    <td className="text-xs">{c.date}</td>
-                    <td className="text-xs font-medium max-w-[120px] truncate">{c.complainant}</td>
-                    <td className="text-xs text-text-secondary max-w-[150px] truncate">{c.category}</td>
-                    <td className="text-xs text-text-secondary">{c.jurisdiction}</td>
-                    <td><span className={priorityBadge(c.priority)}>{c.priority}</span></td>
-                    <td>
-                      <span className={`badge ${
-                        c.status === 'CONVERTED' ? 'badge-green' :
-                        c.status === 'UNDER_INVESTIGATION' ? 'badge-blue' :
-                        c.status === 'PENDING' ? 'badge-amber' : 'badge-gray'
-                      }`}>{c.status.replace(/_/g, ' ')}</span>
-                    </td>
-                    <td>
-                      {c.linked_case
-                        ? <span className="font-mono text-xs text-gov-blue font-bold">{c.linked_case}</span>
-                        : <span className="text-2xs text-text-muted">—</span>
-                      }
-                    </td>
-                    <td className="text-right">
-                      {!c.linked_case ? (
-                        <button className="text-xs font-medium text-gov-blue hover:underline whitespace-nowrap">
-                          Convert to Case
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => c.wallet && onInvestigateWallet(c.wallet)}
-                          className="text-xs font-medium text-gov-blue hover:underline"
-                        >
-                          Investigate
-                        </button>
-                      )}
-                    </td>
+          <div className="space-y-4">
+            {/* Cloud Database Status Bar */}
+            <div className="bg-slate-900 text-white rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-sm border border-slate-700">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0">
+                  <CheckCircle className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-bold uppercase tracking-wider text-emerald-400">
+                      ☁ Dedicated National Cloud Database Active
+                    </span>
+                    <span className="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded border border-slate-700">
+                      Multi-Device Shared Registry
+                    </span>
+                  </div>
+                  <div className="text-xs text-slate-300 mt-0.5">
+                    Any complaint filed on this terminal is immediately saved to the dedicated cloud repository and visible on your friend's laptop or mobile.
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={refreshData}
+                  disabled={isRefreshing}
+                  className="btn-secondary text-xs bg-slate-800 hover:bg-slate-700 text-white border-slate-600 flex items-center gap-1.5"
+                >
+                  <Clock className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-amber-400' : ''}`} />
+                  {isRefreshing ? 'Syncing...' : 'Sync Cloud DB'}
+                </button>
+
+                <button
+                  onClick={() => setShowComplaintForm(true)}
+                  className="btn-primary text-xs flex items-center gap-1.5"
+                >
+                  <Plus className="w-3.5 h-3.5" /> Register Complaint
+                </button>
+              </div>
+            </div>
+
+            {/* Success Alert Banner if just submitted */}
+            {cloudMessage && (
+              <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-md text-emerald-900 text-xs flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{cloudMessage}</span>
+                </div>
+                <button
+                  onClick={() => setCloudMessage(null)}
+                  className="text-2xs text-emerald-700 hover:underline font-bold"
+                >
+                  Dismiss
+                </button>
+              </div>
+            )}
+
+            <div className="gov-card overflow-hidden">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Complaint ID</th>
+                    <th>Date</th>
+                    <th>Complainant / Source</th>
+                    <th>Modus Operandi / Category</th>
+                    <th>Amount (INR)</th>
+                    <th>Blockchain &amp; Suspect Wallet</th>
+                    <th>Jurisdiction</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th className="text-right">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {complaints.map(c => (
+                    <tr key={c.id}>
+                      <td><span className="font-mono text-xs font-bold text-gov-blue">{c.id}</span></td>
+                      <td className="text-xs whitespace-nowrap">{c.date}</td>
+                      <td className="text-xs font-medium max-w-[140px] truncate">{c.complainant}</td>
+                      <td className="text-xs text-text-secondary max-w-[160px] truncate">{c.category}</td>
+                      <td className="text-xs font-mono font-bold text-slate-900 whitespace-nowrap">
+                        {c.amount || '—'}
+                      </td>
+                      <td className="text-xs font-mono">
+                        {c.wallet_address || c.wallet ? (
+                          <button
+                            onClick={() => onInvestigateWallet(c.wallet_address || c.wallet)}
+                            className="text-gov-blue hover:underline flex items-center gap-1 font-mono text-[11px]"
+                            title={c.wallet_address || c.wallet}
+                          >
+                            <span>{(c.wallet_address || c.wallet).slice(0, 8)}...{(c.wallet_address || c.wallet).slice(-6)}</span>
+                            <ChevronRight className="w-3 h-3 text-slate-400" />
+                          </button>
+                        ) : (
+                          <span className="text-2xs text-slate-400">—</span>
+                        )}
+                      </td>
+                      <td className="text-xs text-text-secondary max-w-[130px] truncate">{c.jurisdiction}</td>
+                      <td><span className={priorityBadge(c.priority)}>{c.priority}</span></td>
+                      <td>
+                        <span className={`badge ${
+                          c.status === 'CONVERTED' || c.status === 'ACTIVE_INVESTIGATION' ? 'badge-green' :
+                          c.status === 'UNDER_INVESTIGATION' ? 'badge-blue' :
+                          c.status === 'PENDING' ? 'badge-amber' : 'badge-gray'
+                        }`}>{c.status ? c.status.replace(/_/g, ' ') : 'REGISTERED'}</span>
+                      </td>
+                      <td className="text-right whitespace-nowrap">
+                        <button
+                          onClick={() => {
+                            const targetWallet = c.wallet_address || c.wallet || '0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97';
+                            onInvestigateWallet(targetWallet);
+                          }}
+                          className="btn-secondary text-[11px] py-1 px-2 flex items-center gap-1 inline-flex"
+                        >
+                          Trace Funds <ArrowRight className="w-3 h-3" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>

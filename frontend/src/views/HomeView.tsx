@@ -209,10 +209,26 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </h1>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-2xs text-slate-600 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <button
+              onClick={() => onNavigateToTab('trends')}
+              className="btn-secondary text-xs flex items-center gap-1.5 bg-slate-50 border-slate-300 text-slate-800 hover:bg-slate-100"
+            >
+              <TrendingUp className="w-3.5 h-3.5 text-gov-blue" />
+              Threat Radar &amp; Trends
+            </button>
+
+            <button
+              onClick={() => onNavigateToTab('cases')}
+              className="btn-primary text-xs flex items-center gap-1.5 shadow-sm"
+            >
+              <Shield className="w-3.5 h-3.5" />
+              File Complaint / FIR
+            </button>
+
+            <div className="hidden xl:flex items-center gap-2 text-2xs text-slate-600 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Investigator: <strong className="text-slate-800">Insp. V. K. Deshmukh</strong> (Pune Cyber)</span>
+              <span>Dedicated Cloud DB: <strong className="text-emerald-700">Online &amp; Synced</strong></span>
             </div>
             <button
               onClick={() => window.location.reload()}

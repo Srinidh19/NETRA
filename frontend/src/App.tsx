@@ -8,9 +8,10 @@ import { CasesView } from './views/CasesView';
 import { EvidenceView } from './views/EvidenceView';
 import { SahyogView } from './views/SahyogView';
 import { AuditView } from './views/AuditView';
+import { TrendsView } from './views/TrendsView';
 import { api } from './api';
 
-type Tab = 'home' | 'investigate' | 'network' | 'cases' | 'evidence' | 'sahyog' | 'audit';
+type Tab = 'home' | 'investigate' | 'network' | 'cases' | 'trends' | 'evidence' | 'sahyog' | 'audit';
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<Tab>('home');
@@ -171,6 +172,13 @@ export function App() {
               setSelectedCaseId(caseId);
               setCurrentTab('evidence');
             }}
+          />
+        )}
+
+        {currentTab === 'trends' && (
+          <TrendsView
+            onInvestigateWallet={handleInvestigateWallet}
+            onNavigateToCases={() => setCurrentTab('cases')}
           />
         )}
 

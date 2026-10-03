@@ -20,9 +20,10 @@ const NAV_ITEMS = [
   { id: 'investigate',label: 'Investigate', number: '02', icon: Search },
   { id: 'network',    label: 'Network Map', number: '03', icon: Network },
   { id: 'cases',      label: 'FIR Dockets', number: '04', icon: Briefcase },
-  { id: 'evidence',   label: 'Evidence',    number: '05', icon: FileText },
-  { id: 'sahyog',     label: 'SAHYOG',      number: '06', icon: Shield },
-  { id: 'audit',      label: 'Audit Trail', number: '07', icon: ClipboardList },
+  { id: 'trends',     label: 'Threat Radar',number: '05', icon: Activity },
+  { id: 'evidence',   label: 'Evidence',    number: '06', icon: FileText },
+  { id: 'sahyog',     label: 'SAHYOG',      number: '07', icon: Shield },
+  { id: 'audit',      label: 'Audit Trail', number: '08', icon: ClipboardList },
 ];
 
 export const Navigation: React.FC<NavigationProps> = ({

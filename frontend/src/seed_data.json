@@ -1,0 +1,1008 @@
+{
+  "DEMO_GRAPH_NODES": [
+    {
+      "id": "0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97",
+      "label": "Victim Wallet (0x4838...5f97)",
+      "category": "Wallet",
+      "chain": "Ethereum",
+      "risk_level": "victim",
+      "attribution": "Complainant (Pune FIR 412/26)",
+      "balance_usd": 120.4,
+      "first_seen": "12 Aug 2026",
+      "last_active": "14 Sep 2026",
+      "known_relationships": 3,
+      "is_primary": false,
+      "metadata": {
+        "victim_name": "S. K. Verma",
+        "reported_loss": "\u20b942,80,000"
+      }
+    },
+    {
+      "id": "0x7a912e84c98f5b89a456102dc840b8a1c97012fe",
+      "label": "Primary Mule Alpha (0x7a91...12fe)",
+      "category": "Wallet",
+      "chain": "Ethereum",
+      "risk_level": "high_mule",
+      "attribution": "Layer-1 Mule / Fast Pass",
+      "balance_usd": 4820.0,
+      "first_seen": "14 Sep 2026",
+      "last_active": "30 Sep 2026",
+      "known_relationships": 17,
+      "is_primary": true,
+      "metadata": {
+        "role": "Immediate Theft Collector",
+        "velocity": "Instant pass-through (14 min)"
+      }
+    },
+    {
+      "id": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be",
+      "label": "Consolidator Mule (0x3f5c...f0be)",
+      "category": "Wallet",
+      "chain": "Ethereum",
+      "risk_level": "high_mule",
+      "attribution": "Consolidation Node",
+      "balance_usd": 18200.0,
+      "first_seen": "10 Sep 2026",
+      "last_active": "30 Sep 2026",
+      "known_relationships": 29,
+      "is_primary": false,
+      "metadata": {
+        "role": "Fan-In Aggregator",
+        "swept_to_vasp": true
+      }
+    },
+    {
+      "id": "0x28c6c06298d514db089934071355e5743bf21d60",
+      "label": "Binance Deposit Cluster (0x28c6...1d60)",
+      "category": "VASP Infrastructure",
+      "chain": "Ethereum",
+      "risk_level": "vasp_infrastructure",
+      "attribution": "Binance Institutional Deposit Infrastructure",
+      "balance_usd": 240500.0,
+      "first_seen": "01 Jan 2024",
+      "last_active": "30 Sep 2026",
+      "known_relationships": 4200,
+      "is_primary": false,
+      "metadata": {
+        "vasp": "Binance Global",
+        "sweep_contract": "0x28c6c0"
+      }
+    },
+    {
+      "id": "vasp-binance-hot6",
+      "label": "Binance Hot Wallet 6",
+      "category": "VASP",
+      "chain": "Ethereum",
+      "risk_level": "vasp_exchange",
+      "attribution": "Binance Central Treasury / Hot Cluster",
+      "balance_usd": 89400000.0,
+      "first_seen": "15 Mar 2021",
+      "last_active": "30 Sep 2026",
+      "known_relationships": 189000,
+      "is_primary": false,
+      "metadata": {
+        "fiu_ind_ref": "FIU-IND/VDA/BIN/2024/09",
+        "legal_action_target": true
+      }
+    },
+    {
+      "id": "0xdf21841aa72198018247012984bb12094c180918",
+      "label": "Secondary Mule Beta (0xdf21...0918)",
+      "category": "Wallet",
+      "chain": "Ethereum",
+      "risk_level": "high_mule",
+      "attribution": "Bridge Feeder Mule",
+      "balance_usd": 940.0,
+      "first_seen": "14 Sep 2026",
+      "last_active": "28 Sep 2026",
+      "known_relationships": 9,
+      "is_primary": false,
+      "metadata": {
+        "role": "Cross-Chain Diversion"
+      }
+    },
+    {
+      "id": "contract-stargate-bridge",
+      "label": "Stargate Finance Router Bridge",
+      "category": "Bridge",
+      "chain": "Ethereum / Tron",
+      "risk_level": "bridge_protocol",
+      "attribution": "Cross-Chain Liquidity Bridge",
+      "balance_usd": 4200000.0,
+      "first_seen": "01 Aug 2023",
+      "last_active": "30 Sep 2026",
+      "known_relationships": 54000,
+      "is_primary": false,
+      "metadata": {
+        "protocol": "LayerZero / Stargate",
+        "target_chain": "Tron (TRC20)"
+      }
+    },
+    {
+      "id": "TRx91844jK810294719024870192840918",
+      "label": "Tron Mule Cashout (TRx918...0918)",
+      "category": "Wallet",
+      "chain": "Tron",
+      "risk_level": "high_mule",
+      "attribution": "Tron TRC-20 Liquidation Mule",
+      "balance_usd": 11720.0,
+      "first_seen": "14 Sep 2026",
+      "last_active": "29 Sep 2026",
+      "known_relationships": 12,
+      "is_primary": false,
+      "metadata": {
+        "asset": "TRC20-USDT",
+        "cashout_exchange": "CoinDCX India"
+      }
+    },
+    {
+      "id": "vasp-coindcx-india",
+      "label": "CoinDCX India Custody",
+      "category": "VASP",
+      "chain": "Tron",
+      "risk_level": "vasp_exchange",
+      "attribution": "CoinDCX (FIU-IND Registered Domestic VASP)",
+      "balance_usd": 14200000.0,
+      "first_seen": "01 Jan 2022",
+      "last_active": "30 Sep 2026",
+      "known_relationships": 45000,
+      "is_primary": false,
+      "metadata": {
+        "fiu_ind_status": "COMPLIANT_DOMESTIC"
+      }
+    }
+  ],
+  "DEMO_GRAPH_EDGES": [
+    {
+      "id": "EDGE-01",
+      "source": "0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97",
+      "target": "0x7a912e84c98f5b89a456102dc840b8a1c97012fe",
+      "relation": "SENT",
+      "timestamp": "14 Sep 2026 18:22 IST",
+      "chain": "Ethereum",
+      "transaction_hash": "0x3b89ef4812049182947102938471029487102938471029487102938471f110aa",
+      "asset": "ETH",
+      "amount": 18.4,
+      "usd_value": 48240.0,
+      "direction": "outbound",
+      "source_provider": "Bitquery / Ethereum Mainnet",
+      "evidence_id": "EV-019281",
+      "confidence": "VERIFIED",
+      "investigative_weight": 0.98
+    },
+    {
+      "id": "EDGE-02",
+      "source": "0x7a912e84c98f5b89a456102dc840b8a1c97012fe",
+      "target": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be",
+      "relation": "CONSOLIDATED_TO",
+      "timestamp": "14 Sep 2026 18:36 IST",
+      "chain": "Ethereum",
+      "transaction_hash": "0x918aa81928371029481729384710294871029384710294871029384710b42211",
+      "asset": "ETH",
+      "amount": 13.9,
+      "usd_value": 36418.0,
+      "direction": "outbound",
+      "source_provider": "Bitquery / Ethereum Mainnet",
+      "evidence_id": "EV-019282",
+      "confidence": "VERIFIED",
+      "investigative_weight": 0.95
+    },
+    {
+      "id": "EDGE-03",
+      "source": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be",
+      "target": "0x28c6c06298d514db089934071355e5743bf21d60",
+      "relation": "SWEPT_TO",
+      "timestamp": "14 Sep 2026 18:49 IST",
+      "chain": "Ethereum",
+      "transaction_hash": "0xfa11289102948172039487102948710294871029487102948710293847cc0922",
+      "asset": "ETH",
+      "amount": 13.85,
+      "usd_value": 36287.0,
+      "direction": "outbound",
+      "source_provider": "Bitquery / Ethereum Mainnet",
+      "evidence_id": "EV-019283",
+      "confidence": "VERIFIED",
+      "investigative_weight": 0.96
+    },
+    {
+      "id": "EDGE-04",
+      "source": "0x28c6c06298d514db089934071355e5743bf21d60",
+      "target": "vasp-binance-hot6",
+      "relation": "SWEPT_TO",
+      "timestamp": "14 Sep 2026 19:05 IST",
+      "chain": "Ethereum",
+      "transaction_hash": "0x55dc8192039481720394871029487102948710294871029487102938479911bb",
+      "asset": "ETH",
+      "amount": 13.85,
+      "usd_value": 36287.0,
+      "direction": "outbound",
+      "source_provider": "Ethereum RPC Node",
+      "evidence_id": "EV-019284",
+      "confidence": "VERIFIED",
+      "investigative_weight": 0.99
+    },
+    {
+      "id": "EDGE-05",
+      "source": "0x7a912e84c98f5b89a456102dc840b8a1c97012fe",
+      "target": "0xdf21841aa72198018247012984bb12094c180918",
+      "relation": "SENT",
+      "timestamp": "14 Sep 2026 18:40 IST",
+      "chain": "Ethereum",
+      "transaction_hash": "0x410298192039481720394871029487102948710294871029487102938477b102",
+      "asset": "ETH",
+      "amount": 4.5,
+      "usd_value": 11790.0,
+      "direction": "outbound",
+      "source_provider": "Bitquery Multi-Chain",
+      "evidence_id": "EV-019285",
+      "confidence": "VERIFIED",
+      "investigative_weight": 0.88
+    },
+    {
+      "id": "EDGE-06",
+      "source": "0xdf21841aa72198018247012984bb12094c180918",
+      "target": "contract-stargate-bridge",
+      "relation": "BRIDGED_TO",
+      "timestamp": "14 Sep 2026 19:15 IST",
+      "chain": "Ethereum / Tron",
+      "transaction_hash": "0x892ba19203948172039487102948710294871029487102948710293847112344",
+      "asset": "USDT",
+      "amount": 11750.0,
+      "usd_value": 11750.0,
+      "direction": "outbound",
+      "source_provider": "Bitquery Multi-Chain Bridge Protocol",
+      "evidence_id": "EV-019286",
+      "confidence": "VERIFIED",
+      "investigative_weight": 0.89
+    },
+    {
+      "id": "EDGE-07",
+      "source": "contract-stargate-bridge",
+      "target": "TRx91844jK810294719024870192840918",
+      "relation": "RECEIVED",
+      "timestamp": "14 Sep 2026 19:22 IST",
+      "chain": "Tron",
+      "transaction_hash": "0x6671019203948172039487102948710294871029487102948710293847aa9918",
+      "asset": "TRC20-USDT",
+      "amount": 11720.0,
+      "usd_value": 11720.0,
+      "direction": "inbound",
+      "source_provider": "TronGrid Gateway",
+      "evidence_id": "EV-019287",
+      "confidence": "VERIFIED",
+      "investigative_weight": 0.91
+    },
+    {
+      "id": "EDGE-08",
+      "source": "TRx91844jK810294719024870192840918",
+      "target": "vasp-coindcx-india",
+      "relation": "CONSOLIDATED_TO",
+      "timestamp": "14 Sep 2026 19:48 IST",
+      "chain": "Tron",
+      "transaction_hash": "0x118ca19203948172039487102948710294871029487102948710293847901233",
+      "asset": "TRC20-USDT",
+      "amount": 11700.0,
+      "usd_value": 11700.0,
+      "direction": "outbound",
+      "source_provider": "TronGrid Gateway",
+      "evidence_id": "EV-019288",
+      "confidence": "VERIFIED",
+      "investigative_weight": 0.94
+    }
+  ],
+  "CASES_SEED": [
+    {
+      "id": "NTR-DEMO-001",
+      "title": "Operation ShadowSiphon: Multi-Chain Mule Syndicate",
+      "fir_number": "FIR 412/2026",
+      "police_station": "Cyber Police Station, Pune City",
+      "state": "Maharashtra",
+      "status": "ACTIVE_INVESTIGATION",
+      "priority": "CRITICAL",
+      "case_type": "CURRENT",
+      "investigator": "Insp. V. K. Deshmukh (Cyber Financial Crime Unit)",
+      "created_at": "14 Sep 2026 19:30 IST",
+      "last_updated": "04 Oct 2026 01:15 IST",
+      "loss_amount_inr": 4280000.0,
+      "recovery_amount_inr": 2996000.0,
+      "accused_count": 4,
+      "ncrp_ack_number": "1930-NCRP-2026-981240",
+      "victim_wallet": "0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97",
+      "identified_vasps": [
+        "Binance Global",
+        "CoinDCX India"
+      ],
+      "evidence_count": 8,
+      "actions_count": 3,
+      "tags": [
+        "Telegram Task Fraud",
+        "Cross-Chain Bridge",
+        "Institutional Sweep"
+      ],
+      "synopsis": "Complainant induced to invest \u20b942.8 Lakh via deceptive algorithmic crypto portal. Stolen capital immediately siphoned across layered mule wallets, with 70% consolidating into Binance deposit clusters within 43 minutes."
+    },
+    {
+      "id": "NTR-2041",
+      "title": "Pune Investment Fraud & Telegram Task Syndicate",
+      "fir_number": "FIR 219/2026",
+      "police_station": "Cyber Cell, Shivaji Nagar, Pune",
+      "state": "Maharashtra",
+      "status": "ACTION_REQUIRED",
+      "priority": "HIGH",
+      "case_type": "CURRENT",
+      "investigator": "SI R. Nair",
+      "created_at": "20 Sep 2026 11:15 IST",
+      "last_updated": "03 Oct 2026 21:50 IST",
+      "loss_amount_inr": 1840000.0,
+      "recovery_amount_inr": 920000.0,
+      "accused_count": 2,
+      "ncrp_ack_number": "1930-NCRP-2026-979102",
+      "victim_wallet": "0x1192840918237192847102948710294871029384",
+      "identified_vasps": [
+        "Binance Global",
+        "WazirX"
+      ],
+      "evidence_count": 6,
+      "actions_count": 2,
+      "tags": [
+        "Part-Time Job",
+        "Fast Cashout",
+        "Section 91 CrPC"
+      ],
+      "synopsis": "Victims promised daily returns for rating travel destinations. Funds swept to mule addresses then deposited into VASP hot wallets for instant P2P liquidation."
+    },
+    {
+      "id": "NTR-1987",
+      "title": "Bengaluru Digital Arrest & Fedex Impersonation",
+      "fir_number": "FIR 554/2026",
+      "police_station": "Cyber Police Station, Bengaluru City",
+      "state": "Karnataka",
+      "status": "EVIDENCE_ATTACHED",
+      "priority": "CRITICAL",
+      "case_type": "CURRENT",
+      "investigator": "ACP K. Suresh",
+      "created_at": "05 Sep 2026 14:20 IST",
+      "last_updated": "02 Oct 2026 20:30 IST",
+      "loss_amount_inr": 6500000.0,
+      "recovery_amount_inr": 4100000.0,
+      "accused_count": 5,
+      "ncrp_ack_number": "1930-NCRP-2026-978441",
+      "victim_wallet": "0x5501928471029487102938471029487102938471",
+      "identified_vasps": [
+        "CoinDCX India",
+        "Bitbns"
+      ],
+      "evidence_count": 11,
+      "actions_count": 4,
+      "tags": [
+        "Digital Arrest",
+        "Fedex Scam",
+        "Asset Tracking"
+      ],
+      "synopsis": "Elderly professional coerced under 72-hour Skype 'digital arrest' to liquidate mutual funds into crypto and transmit to an alleged 'RBI Verification Escrow'."
+    },
+    {
+      "id": "NTR-2104",
+      "title": "Cyberabad Part-Time Video Liking Scam",
+      "fir_number": "FIR 812/2026",
+      "police_station": "Cyberabad Cyber Crime PS, Hyderabad",
+      "state": "Telangana",
+      "status": "SAHYOG_DISCLOSED",
+      "priority": "MEDIUM",
+      "case_type": "CURRENT",
+      "investigator": "Insp. M. Reddy",
+      "created_at": "22 Sep 2026 09:00 IST",
+      "last_updated": "01 Oct 2026 19:40 IST",
+      "loss_amount_inr": 1220000.0,
+      "recovery_amount_inr": 850000.0,
+      "accused_count": 3,
+      "ncrp_ack_number": "1930-NCRP-2026-974102",
+      "victim_wallet": "0x9918237192847102948710293847102948710293",
+      "identified_vasps": [
+        "Binance Global"
+      ],
+      "evidence_count": 5,
+      "actions_count": 1,
+      "tags": [
+        "YouTube Task",
+        "UPI-to-Crypto",
+        "Mule Account"
+      ],
+      "synopsis": "Funds collected through 24 fragmented mule bank accounts, aggregated via domestic P2P into TRC-20 USDT, and withdrawn to overseas wallets."
+    },
+    {
+      "id": "NTR-2150",
+      "title": "Mumbai Institutional Pre-IPO WhatsApp Syndicate",
+      "fir_number": "FIR 308/2026",
+      "police_station": "BKC Cyber Police, Mumbai",
+      "state": "Maharashtra",
+      "status": "ACTIVE_INVESTIGATION",
+      "priority": "CRITICAL",
+      "case_type": "CURRENT",
+      "investigator": "DCP A. Patil",
+      "created_at": "25 Sep 2026 16:45 IST",
+      "last_updated": "03 Oct 2026 22:05 IST",
+      "loss_amount_inr": 18500000.0,
+      "recovery_amount_inr": 6200000.0,
+      "accused_count": 6,
+      "ncrp_ack_number": "1930-NCRP-2026-983199",
+      "victim_wallet": "0x3344192847102948710293847102948710293847",
+      "identified_vasps": [
+        "OKX",
+        "Binance Global"
+      ],
+      "evidence_count": 14,
+      "actions_count": 5,
+      "tags": [
+        "Pre-IPO Fraud",
+        "High Net Worth",
+        "Cross-Border"
+      ],
+      "synopsis": "High-net-worth investor lured by counterfeit institutional trading desk claiming special pre-allotment in impending domestic unicorn IPOs."
+    },
+    {
+      "id": "NTR-2199",
+      "title": "Cyberabad Algorithmic P2P Arbitrage Scam",
+      "fir_number": "FIR 891/2026",
+      "police_station": "Gachibowli Cyber Crime Cell, Hyderabad",
+      "state": "Telangana",
+      "status": "ACTIVE_INVESTIGATION",
+      "priority": "HIGH",
+      "case_type": "CURRENT",
+      "investigator": "Insp. T. Venkatesh",
+      "created_at": "28 Sep 2026 14:00 IST",
+      "last_updated": "03 Oct 2026 18:30 IST",
+      "loss_amount_inr": 5620000.0,
+      "recovery_amount_inr": 3100000.0,
+      "accused_count": 4,
+      "ncrp_ack_number": "1930-NCRP-2026-985201",
+      "victim_wallet": "0x6629182371928471029487102938471029487102",
+      "identified_vasps": [
+        "CoinSwitch Kuber",
+        "Binance Global"
+      ],
+      "evidence_count": 7,
+      "actions_count": 3,
+      "tags": [
+        "P2P Arbitrage",
+        "Mule Liquidation",
+        "Section 102 Freeze"
+      ],
+      "synopsis": "Syndicate recruited university students as mule account holders to facilitate high-frequency P2P USDT purchases, funneled to offshore gambling smart contracts."
+    },
+    {
+      "id": "NTR-2234",
+      "title": "Ahmedabad Part-Time E-Commerce Review Drain",
+      "fir_number": "FIR 104/2026",
+      "police_station": "Cyber Police Station, Ahmedabad City",
+      "state": "Gujarat",
+      "status": "ACTION_REQUIRED",
+      "priority": "HIGH",
+      "case_type": "CURRENT",
+      "investigator": "PI N. J. Vaghela",
+      "created_at": "29 Sep 2026 10:20 IST",
+      "last_updated": "03 Oct 2026 16:45 IST",
+      "loss_amount_inr": 3400000.0,
+      "recovery_amount_inr": 1800000.0,
+      "accused_count": 3,
+      "ncrp_ack_number": "1930-NCRP-2026-986412",
+      "victim_wallet": "TRx8812948710293847102938471029384710291122",
+      "identified_vasps": [
+        "ZebPay",
+        "CoinDCX India"
+      ],
+      "evidence_count": 8,
+      "actions_count": 2,
+      "tags": [
+        "Job Task",
+        "Tron TRC-20",
+        "Fast Extraction"
+      ],
+      "synopsis": "Victims paid small initial commissions for writing product reviews before being coerced into depositing \u20b934 Lakh in TRC20-USDT to unlock pending balances."
+    },
+    {
+      "id": "NTR-2342",
+      "title": "Chennai Stargate Liquidity Bridge Drain Ring",
+      "fir_number": "FIR 442/2026",
+      "police_station": "Cyber Crime Division, Greater Chennai Police",
+      "state": "Tamil Nadu",
+      "status": "ACTIVE_INVESTIGATION",
+      "priority": "CRITICAL",
+      "case_type": "CURRENT",
+      "investigator": "Insp. M. Saravanan",
+      "created_at": "01 Oct 2026 09:10 IST",
+      "last_updated": "03 Oct 2026 23:30 IST",
+      "loss_amount_inr": 11200000.0,
+      "recovery_amount_inr": 7800000.0,
+      "accused_count": 5,
+      "ncrp_ack_number": "1930-NCRP-2026-989104",
+      "victim_wallet": "0x7719284710294871029384710294871029384788",
+      "identified_vasps": [
+        "Binance Global",
+        "CoinDCX India"
+      ],
+      "evidence_count": 13,
+      "actions_count": 4,
+      "tags": [
+        "Bridge Laundering",
+        "LayerZero",
+        "Stargate Router"
+      ],
+      "synopsis": "Multi-hop cross-chain laundering funneling siphoned capital across Ethereum, Arbitrum, and Tron before final cashout via domestic exchange OTC counters."
+    },
+    {
+      "id": "NTR-1822",
+      "title": "Delhi Electricity Bill APK Siphon & Hawala Cashout",
+      "fir_number": "FIR 114/2026",
+      "police_station": "Special Cell, Cyber Crime Unit, New Delhi",
+      "state": "Delhi",
+      "status": "CLOSED_RECOVERED",
+      "priority": "HIGH",
+      "case_type": "PREVIOUS",
+      "investigator": "ACP R. K. Tanwar",
+      "created_at": "12 Jul 2026 10:30 IST",
+      "last_updated": "28 Aug 2026 15:00 IST",
+      "loss_amount_inr": 8450000.0,
+      "recovery_amount_inr": 8450000.0,
+      "accused_count": 4,
+      "court_name": "Patiala House Courts, New Delhi",
+      "ncrp_ack_number": "1930-NCRP-2026-612940",
+      "victim_wallet": "0x7719284710294871029384710293847102938471",
+      "identified_vasps": [
+        "Binance Global",
+        "WazirX"
+      ],
+      "evidence_count": 9,
+      "actions_count": 3,
+      "tags": [
+        "Malicious APK",
+        "SMS Spoofing",
+        "100% Restitution Complete"
+      ],
+      "synopsis": "Victims targeted via spoofed SMS claiming impending electricity disconnection. Malicious APK intercepted OTPs. 100% of siphoned crypto assets (\u20b984.5 Lakh) frozen in Binance deposit clusters under Section 102 CrPC and restituted to victims."
+    },
+    {
+      "id": "NTR-1760",
+      "title": "Gujarat Crypto Hawala Mule Consolidation Network",
+      "fir_number": "FIR 092/2026",
+      "police_station": "CID Crime Cyber Police, Gandhinagar",
+      "state": "Gujarat",
+      "status": "CHARGE_SHEETED",
+      "priority": "CRITICAL",
+      "case_type": "PREVIOUS",
+      "investigator": "DySP H. M. Jadeja",
+      "created_at": "04 May 2026 11:20 IST",
+      "last_updated": "18 Aug 2026 14:10 IST",
+      "loss_amount_inr": 24000000.0,
+      "recovery_amount_inr": 24000000.0,
+      "accused_count": 11,
+      "court_name": "Chief Judicial Magistrate, Gandhinagar",
+      "charge_sheet_ref": "CS-GJ-CYBER-2026-0044",
+      "ncrp_ack_number": "1930-NCRP-2026-441209",
+      "victim_wallet": "0x8819284710294871029384710293847102938472",
+      "identified_vasps": [
+        "CoinDCX India",
+        "Bitbns",
+        "OKX"
+      ],
+      "evidence_count": 18,
+      "actions_count": 7,
+      "tags": [
+        "Hawala Network",
+        "P2P Arbitrage",
+        "Court Trial Active"
+      ],
+      "synopsis": "Organized syndicate operating 58 mule bank accounts to purchase USDT on domestic P2P desks for offshore Hawala syndicates. Formal charge-sheet filed before CJM Court; \u20b92.40 Crore assets judicial attachment confirmed."
+    },
+    {
+      "id": "NTR-1694",
+      "title": "Kolkata Cloned Gaming App & Pig Butchering Ring",
+      "fir_number": "FIR 604/2025",
+      "police_station": "Cyber Police Station, Lalbazar, Kolkata",
+      "state": "West Bengal",
+      "status": "CLOSED_RECOVERED",
+      "priority": "MEDIUM",
+      "case_type": "PREVIOUS",
+      "investigator": "Insp. S. Banerjee",
+      "created_at": "19 Dec 2025 15:40 IST",
+      "last_updated": "10 Jun 2026 16:30 IST",
+      "loss_amount_inr": 11500000.0,
+      "recovery_amount_inr": 10900000.0,
+      "accused_count": 6,
+      "court_name": "Bankshall Court, Kolkata",
+      "ncrp_ack_number": "1930-NCRP-2025-891044",
+      "victim_wallet": "0x4419284710294871029384710293847102938473",
+      "identified_vasps": [
+        "Binance Global",
+        "WazirX"
+      ],
+      "evidence_count": 12,
+      "actions_count": 4,
+      "tags": [
+        "Pig Butchering",
+        "Gaming Fraud",
+        "Restitution Complete"
+      ],
+      "synopsis": "Syndicate lured retail victims into investing in fraudulent color-prediction gaming dApps. Funds traced across 3 hops to Binance hot wallets; successful SAHYOG recovery order executed with 95% capital restored."
+    },
+    {
+      "id": "NTR-1580",
+      "title": "Gurugram Counterfeit Foreign Exchange Desk",
+      "fir_number": "FIR 340/2025",
+      "police_station": "Cyber Crime PS, Manesar, Gurugram",
+      "state": "Haryana",
+      "status": "CHARGE_SHEETED",
+      "priority": "HIGH",
+      "case_type": "PREVIOUS",
+      "investigator": "Insp. A. K. Dahiya",
+      "created_at": "10 Nov 2025 10:15 IST",
+      "last_updated": "15 May 2026 12:00 IST",
+      "loss_amount_inr": 16200000.0,
+      "recovery_amount_inr": 14500000.0,
+      "accused_count": 7,
+      "court_name": "District & Sessions Court, Gurugram",
+      "charge_sheet_ref": "CS-HR-GUR-2026-0019",
+      "ncrp_ack_number": "1930-NCRP-2025-782101",
+      "victim_wallet": "0x2219284710294871029384710293847102938474",
+      "identified_vasps": [
+        "OKX",
+        "CoinDCX India"
+      ],
+      "evidence_count": 15,
+      "actions_count": 6,
+      "tags": [
+        "Counterfeit Forex",
+        "Bogus MetaTrader",
+        "Charge-Sheeted"
+      ],
+      "synopsis": "Call center running bogus MetaTrader 5 server clones convincing citizens to deposit USDT. 7 syndicate kingpins arrested in joint raid; formal Section 65B certified ledger submitted to court."
+    },
+    {
+      "id": "NTR-1430",
+      "title": "Jaipur Matrimonial Crypto Extortion Syndicate",
+      "fir_number": "FIR 288/2025",
+      "police_station": "Cyber Police Station, Jaipur Commissionerate",
+      "state": "Rajasthan",
+      "status": "CLOSED_RECOVERED",
+      "priority": "MEDIUM",
+      "case_type": "PREVIOUS",
+      "investigator": "ACP N. Rathore",
+      "created_at": "15 Aug 2025 11:00 IST",
+      "last_updated": "20 Feb 2026 17:15 IST",
+      "loss_amount_inr": 3800000.0,
+      "recovery_amount_inr": 3800000.0,
+      "accused_count": 3,
+      "court_name": "Sessions Court, Jaipur Metro",
+      "ncrp_ack_number": "1930-NCRP-2025-541299",
+      "victim_wallet": "0x9928172938471029384710293847102938471029",
+      "identified_vasps": [
+        "CoinDCX India"
+      ],
+      "evidence_count": 8,
+      "actions_count": 3,
+      "tags": [
+        "Matrimonial Fraud",
+        "Emotional Coercion",
+        "100% Recovered"
+      ],
+      "synopsis": "Scammers posed as NRI engineers on matrimonial portals, tricking victims into investing in dummy crypto liquidity pools. CoinDCX accounts attached in time for complete victim payout."
+    },
+    {
+      "id": "NTR-1310",
+      "title": "Chandigarh Ponzi Cloud Mining Ring",
+      "fir_number": "FIR 519/2025",
+      "police_station": "Cyber Crime Police Station, Sector 17, Chandigarh",
+      "state": "Punjab & Chandigarh",
+      "status": "CHARGE_SHEETED",
+      "priority": "CRITICAL",
+      "case_type": "PREVIOUS",
+      "investigator": "DSP Harinder S. Gill",
+      "created_at": "02 Jun 2025 09:30 IST",
+      "last_updated": "12 Jan 2026 14:00 IST",
+      "loss_amount_inr": 45000000.0,
+      "recovery_amount_inr": 38500000.0,
+      "accused_count": 14,
+      "court_name": "Special CBI / PMLA Court, Chandigarh",
+      "charge_sheet_ref": "CS-UT-CH-2026-0008",
+      "ncrp_ack_number": "1930-NCRP-2025-391002",
+      "victim_wallet": "0x1102938471029384710293847102938471029384",
+      "identified_vasps": [
+        "Binance Global",
+        "CoinSwitch Kuber"
+      ],
+      "evidence_count": 22,
+      "actions_count": 8,
+      "tags": [
+        "Cloud Mining Ponzi",
+        "Multi-Level Scheme",
+        "Court Trial"
+      ],
+      "synopsis": "Multi-tier pyramid scheme promising 2.5% daily compounding crypto dividends. 14 promoters arrested across Punjab & Haryana; properties and VASP wallets attached under PMLA."
+    },
+    {
+      "id": "NTR-1190",
+      "title": "Kochi Fake Forex Remittance & P2P Siphon",
+      "fir_number": "FIR 167/2025",
+      "police_station": "Cyber Crime Police Station, Infopark, Kochi",
+      "state": "Kerala",
+      "status": "CLOSED_RECOVERED",
+      "priority": "MEDIUM",
+      "case_type": "PREVIOUS",
+      "investigator": "CI George Mathew",
+      "created_at": "18 Mar 2025 14:15 IST",
+      "last_updated": "10 Nov 2025 11:30 IST",
+      "loss_amount_inr": 7200000.0,
+      "recovery_amount_inr": 7200000.0,
+      "accused_count": 4,
+      "court_name": "Judicial First Class Magistrate, Ernakulam",
+      "ncrp_ack_number": "1930-NCRP-2025-210499",
+      "victim_wallet": "0x5519284710293847102938471029384710293847",
+      "identified_vasps": [
+        "ZebPay",
+        "CoinDCX India"
+      ],
+      "evidence_count": 10,
+      "actions_count": 4,
+      "tags": [
+        "NRI Remittance Fraud",
+        "P2P Siphon",
+        "100% Restitution"
+      ],
+      "synopsis": "NRIs targeted with fraudulent lower-cost cross-border remittance software that routed INR bank deposits into mule crypto wallets. Fast Section 91 freeze secured 100% recovery."
+    }
+  ],
+  "INDIA_MAP_REGIONS": [
+    {
+      "id": "IN-MH",
+      "name": "Maharashtra",
+      "capital": "Mumbai",
+      "coordinates": [
+        72.8777,
+        19.076
+      ],
+      "active_investigations": 84,
+      "observed_scam_networks": 19,
+      "vasp_interactions": 11,
+      "recent_signals": 7,
+      "total_observed_flow_cr": 38.4,
+      "top_patterns": [
+        "Investment fraud",
+        "Pre-IPO syndicates",
+        "Telegram task scam",
+        "P2P mule cashout"
+      ],
+      "active_cases": [
+        "NTR-DEMO-001",
+        "NTR-2041",
+        "NTR-2150"
+      ]
+    },
+    {
+      "id": "IN-DL",
+      "name": "Delhi NCR",
+      "capital": "New Delhi",
+      "coordinates": [
+        77.1025,
+        28.7041
+      ],
+      "active_investigations": 62,
+      "observed_scam_networks": 14,
+      "vasp_interactions": 9,
+      "recent_signals": 5,
+      "total_observed_flow_cr": 26.2,
+      "top_patterns": [
+        "Customs impersonation",
+        "Crypto job scams",
+        "Unauthorized loan apps"
+      ],
+      "active_cases": [
+        "NTR-2104"
+      ]
+    },
+    {
+      "id": "IN-KA",
+      "name": "Karnataka",
+      "capital": "Bengaluru",
+      "coordinates": [
+        77.5946,
+        12.9716
+      ],
+      "active_investigations": 47,
+      "observed_scam_networks": 11,
+      "vasp_interactions": 8,
+      "recent_signals": 4,
+      "total_observed_flow_cr": 21.8,
+      "top_patterns": [
+        "Digital arrest scams",
+        "Fedex impersonation",
+        "Tech support fraud"
+      ],
+      "active_cases": [
+        "NTR-1987"
+      ]
+    },
+    {
+      "id": "IN-RJ",
+      "name": "Rajasthan",
+      "capital": "Jaipur",
+      "coordinates": [
+        75.7873,
+        26.9124
+      ],
+      "active_investigations": 39,
+      "observed_scam_networks": 16,
+      "vasp_interactions": 5,
+      "recent_signals": 8,
+      "total_observed_flow_cr": 14.5,
+      "top_patterns": [
+        "Mule account sourcing (Mewat)",
+        "Marketplace scams",
+        "Sextortion"
+      ],
+      "active_cases": [
+        "NTR-2041"
+      ]
+    },
+    {
+      "id": "IN-TG",
+      "name": "Telangana",
+      "capital": "Hyderabad",
+      "coordinates": [
+        78.4867,
+        17.385
+      ],
+      "active_investigations": 35,
+      "observed_scam_networks": 9,
+      "vasp_interactions": 7,
+      "recent_signals": 3,
+      "total_observed_flow_cr": 16.9,
+      "top_patterns": [
+        "Part-time task fraud",
+        "Trading app fraud",
+        "Mule consolidation"
+      ],
+      "active_cases": [
+        "NTR-2104"
+      ]
+    },
+    {
+      "id": "IN-GJ",
+      "name": "Gujarat",
+      "capital": "Ahmedabad",
+      "coordinates": [
+        72.5714,
+        23.0225
+      ],
+      "active_investigations": 31,
+      "observed_scam_networks": 8,
+      "vasp_interactions": 6,
+      "recent_signals": 4,
+      "total_observed_flow_cr": 18.2,
+      "top_patterns": [
+        "Angadia-to-Crypto hawala",
+        "P2P arbitrage",
+        "Counterfeit forex"
+      ],
+      "active_cases": [
+        "NTR-2150"
+      ]
+    },
+    {
+      "id": "IN-WB",
+      "name": "West Bengal",
+      "capital": "Kolkata",
+      "coordinates": [
+        88.3639,
+        22.5726
+      ],
+      "active_investigations": 28,
+      "observed_scam_networks": 7,
+      "vasp_interactions": 4,
+      "recent_signals": 3,
+      "total_observed_flow_cr": 11.4,
+      "top_patterns": [
+        "Cross-border SIM routing",
+        "Lottery fraud",
+        "Mule accounts"
+      ],
+      "active_cases": []
+    }
+  ],
+  "ACTIONS_SEED": [
+    {
+      "id": "ACT-801",
+      "case_id": "NTR-DEMO-001",
+      "urgency": "URGENT",
+      "action_type": "SAHYOG_DISCLOSURE",
+      "title": "Prepare SAHYOG Section 91 CrPC Disclosure Request",
+      "detail": "Likely VASP Binance Global identified with 7 supporting observations. Immediate KYC disclosure required before funds are withdrawn via P2P.",
+      "target_entity": "Binance Global (FIU-IND Reporting Intermediary)",
+      "sahyog_ready": true,
+      "status": "PREPARED",
+      "created_at": "30 Sep 2026 21:55 IST"
+    },
+    {
+      "id": "ACT-802",
+      "case_id": "NTR-2041",
+      "urgency": "URGENT",
+      "action_type": "ASSET_FREEZE_NOTICE",
+      "title": "Emergency Asset Freeze Request (Sec 102 CrPC)",
+      "detail": "Corroborated mule wallet 0x3f5c...f0be currently holds 18.25 ETH pending scheduled outbound liquidation.",
+      "target_entity": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be",
+      "sahyog_ready": true,
+      "status": "IN_REVIEW",
+      "created_at": "30 Sep 2026 21:30 IST"
+    },
+    {
+      "id": "ACT-803",
+      "case_id": "NTR-1987",
+      "urgency": "ACTION_REQUIRED",
+      "action_type": "CROSS_CHAIN_CORRELATION",
+      "title": "Bridge Trace Verification: Stargate ETH-Tron Transition",
+      "detail": "Tron TRC-20 cashout wallet TRx918...0918 received 11,720 USDT. Correlate with domestic CoinDCX account.",
+      "target_entity": "Stargate Finance Router Bridge",
+      "sahyog_ready": false,
+      "status": "PREPARED",
+      "created_at": "30 Sep 2026 20:45 IST"
+    }
+  ],
+  "EVIDENCE_SEED": [
+    {
+      "id": "EV-019281",
+      "case_id": "NTR-DEMO-001",
+      "title": "Victim L1 Fraud Transfer Log",
+      "evidence_type": "ON_CHAIN_TX",
+      "source_provider": "Bitquery / Ethereum Mainnet",
+      "observed_at": "14 Sep 2026 18:22:10 IST",
+      "reference_hash": "0x3b89ef4812049182947102938471029487102938471029487102938471f110aa",
+      "block_or_log_id": "Block #21894088",
+      "chain": "Ethereum",
+      "provenance_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "analyst": "Insp. V. K. Deshmukh",
+      "verified_tamper_evident": true,
+      "content_summary": "Initial transfer of 18.4 ETH from victim's MetaMask directly into Mule Alpha.",
+      "metadata": {
+        "gas_used": 21000,
+        "base_fee_gwei": 14.2
+      }
+    },
+    {
+      "id": "EV-019284",
+      "case_id": "NTR-DEMO-001",
+      "title": "Binance Institutional Deposit Sweep Match",
+      "evidence_type": "VASP_DEPOSIT_MATCH",
+      "source_provider": "Ethereum RPC Archive Node",
+      "observed_at": "14 Sep 2026 19:05:44 IST",
+      "reference_hash": "0x55dc8192039481720394871029487102948710294871029487102938479911bb",
+      "block_or_log_id": "Block #21894101",
+      "chain": "Ethereum",
+      "provenance_hash": "7d793037a0760186574b0282f2f435e70d71686e9e9a74eb35f08c0f6b03fb50",
+      "analyst": "Insp. V. K. Deshmukh",
+      "verified_tamper_evident": true,
+      "content_summary": "Internal automated exchange consolidation sweep from deposit proxy 0x28c6c0... to Binance Hot Wallet 6.",
+      "metadata": {
+        "cluster": "Binance Hot Cluster 6",
+        "sweep_latency_seconds": 972
+      }
+    },
+    {
+      "id": "EV-019286",
+      "case_id": "NTR-DEMO-001",
+      "title": "Stargate Cross-Chain Router Bridge Event",
+      "evidence_type": "BRIDGE_LOG",
+      "source_provider": "Bitquery Multi-Chain Bridge Protocol",
+      "observed_at": "14 Sep 2026 19:15:30 IST",
+      "reference_hash": "0x892ba19203948172039487102948710294871029487102948710293847112344",
+      "block_or_log_id": "Event #StargateSwapRemote",
+      "chain": "Ethereum / Tron",
+      "provenance_hash": "8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4",
+      "analyst": "Insp. V. K. Deshmukh",
+      "verified_tamper_evident": true,
+      "content_summary": "4.5 ETH swapped and bridged to 11,750 TRC-20 USDT bound for Tron wallet TRx918...0918.",
+      "metadata": {
+        "src_chain_id": 101,
+        "dst_chain_id": 108
+      }
+    }
+  ]
+}
