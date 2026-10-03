@@ -1,6 +1,26 @@
 {
   "complaints": [
     {
+      "id": "CP-2026-3209",
+      "date": "2026-10-03",
+      "complainant": "Anonymous Citizen / Law Enforcement Unit",
+      "category": "Investment / Trading Fraud",
+      "description": "Cryptocurrency fraudulent diversion reported via NETRA Portal.",
+      "reference_number": "NCRP-ACK-3209",
+      "jurisdiction": "State Cyber Crime Coordination Cell",
+      "investigating_unit": "Special Investigation Team (Cyber)",
+      "priority": "HIGH",
+      "status": "ACTIVE_INVESTIGATION",
+      "wallet_address": "",
+      "tx_hash": "",
+      "chain": "Ethereum",
+      "asset": "USDT",
+      "amount": "₹10,00,000",
+      "suspected_vasp": "Binance / Global VASP",
+      "known_domain": "",
+      "timestamp": "2026-10-03T22:23:42.750Z"
+    },
+    {
       "id": "CP-2026-TEST",
       "date": "2026-10-03T22:18:36.193Z",
       "complainant": "Test Complainant",
@@ -9,5 +29,5 @@
       "status": "ACTIVE"
     }
   ],
-  "updated_at": "2026-10-03T22:17:34.258Z"
+  "updated_at": "2026-10-03T22:23:42.846Z"
 }
